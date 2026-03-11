@@ -800,7 +800,9 @@ body {
 }
 
 .use-cases li::before {
-  content: '💡 ';
+  content: '•';
+  margin-right: 8px;
+  color: var(--accent-1);
 }
 
 /* Footer */

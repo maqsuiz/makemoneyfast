@@ -15,7 +15,7 @@ async function scanEcommerce() {
             module: 'ecommerce',
             title: 'E-Commerce Arbitrage Scanner',
             last_updated: new Date().toISOString(),
-            data_source: 'Simüle Edilen Piyasa Verisi',
+            data_source: 'Simulated Market Data',
             summary: {
                 total_products_scanned: products.length,
                 opportunities_found: opportunities.length,
@@ -28,8 +28,8 @@ async function scanEcommerce() {
             all_products: products
         };
     } catch (error) {
-        console.error('E-ticaret tarama hatası:', error.message);
-        return { module: 'ecommerce', title: '🛒 E-Ticaret Arbitraj Tarayıcı', icon: '🛒', opportunities: [], error: error.message };
+        console.error('E-commerce scan error:', error.message);
+        return { module: 'ecommerce', title: 'E-Commerce Arbitrage Scanner', opportunities: [], error: error.message };
     }
 }
 

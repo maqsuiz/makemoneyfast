@@ -54,7 +54,7 @@ async function loadTab(tab) {
     updateTime();
     if (tab === 'report') updateSummaryBar(dataCache[tab]);
   } catch (e) {
-    document.getElementById('tabContent').innerHTML = `<div class="card"><p style="color:var(--red)">Veri yüklenemedi: ${e.message}</p></div>`;
+    document.getElementById('tabContent').innerHTML = `<div class="card"><p style="color:var(--red)">Data could not be loaded: ${e.message}</p></div>`;
   }
   showLoading(false);
 }
@@ -94,14 +94,14 @@ function renderTab(tab, data) {
     'freelance': renderFreelance,
     'trends': renderTrends
   };
-  container.innerHTML = renderers[tab] ? renderers[tab](data) : '<p>Bilinmeyen sekme</p>';
+  container.innerHTML = renderers[tab] ? renderers[tab](data) : '<p>Unknown tab</p>';
 }
 
 function renderReport(data) {
   const opps = data.opportunities || [];
   return `
     <div class="report-header">
-      <h2>${data.title || 'Günlük Rapor'}</h2>
+      <h2>${data.title || 'Daily Report'}</h2>
       <p>${data.summary || ''}</p>
       ${data.highlights ? `<div class="report-highlights">${data.highlights.map(h => `<span class="highlight-chip">${h}</span>`).join('')}</div>` : ''}
     </div>
@@ -142,23 +142,23 @@ function renderEcommerce(data) {
         <div class="card" style="animation-delay:${i * 0.06}s">
           <div class="card-header">
             <span class="card-title">${o.product_name}</span>
-            <span class="card-badge badge-green">%${o.price_difference_percent} fark</span>
+            <span class="card-badge badge-green">%${o.price_difference_percent} diff</span>
           </div>
           <div class="card-body">
             ${Object.entries(o.all_prices).map(([plat, price]) => `
               <div class="price-row">
                 <span class="platform">${plat}</span>
-                <span class="price ${price === o.cheapest_price ? 'cheapest' : price === o.expensive_price ? 'expensive' : ''}">${price.toLocaleString('tr-TR')}₺</span>
+                <span class="price ${price === o.cheapest_price ? 'cheapest' : price === o.expensive_price ? 'expensive' : ''}">$${price.toLocaleString('en-US')}</span>
               </div>
             `).join('')}
             <div class="profit-highlight">
-              <span class="label">Tahmini Kar:</span>
-              <span class="value">${o.estimated_profit_tl.toLocaleString('tr-TR')}₺</span>
+              <span class="label">Estimated Profit:</span>
+              <span class="value">$${o.estimated_profit_tl.toLocaleString('en-US')}</span>
             </div>
           </div>
           <div class="card-footer">
             <span class="meta-tag">${o.category}</span>
-            <a class="card-link" href="${o.links.amazon || '#'}" target="_blank">En Ucuz Gör</a>
+            <a class="card-link" href="${o.links.amazon || '#'}" target="_blank">See Cheapest</a>
           </div>
         </div>
       `).join('')}
