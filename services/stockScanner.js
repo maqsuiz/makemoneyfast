@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 require('dotenv').config();
 
-const POLYGON_API_KEY = process.env.POLYGON_API_KEY;
+const POLYGON_API_KEY = process.env.POLYGON_API_KEY || 'DhMxFpSMNgRI_fKuJu5N_aFIZMEIBlDC';
 
 async function scanStocks() {
     try {
@@ -29,7 +29,6 @@ async function scanStocks() {
                     });
                 }
             }
-            // Polygon free tier safety sleep
             await new Promise(r => setTimeout(r, 200));
         }
 
@@ -39,20 +38,13 @@ async function scanStocks() {
             module: 'stocks',
             title: 'Stock Scanner',
             last_updated: new Date().toISOString(),
-            data_source: 'Polygon.io (Prev Close)',
-            market_summary: {
-                bist100_change: "0.00",
-                sp500_change: "0.00",
-                nasdaq_change: "0.00",
-                usd_try: "36.50",
-                eur_try: "38.20"
-            },
+            data_source: 'Polygon.io (Real Data)',
             signals,
             all_stocks: stockData
         };
     } catch (error) {
         console.error('Stock scan error:', error.message);
-        return { module: 'stocks', title: 'Stock Scanner', signals: [], error: error.message };
+        return { module: 'stocks', signals: [], all_stocks: [], error: error.message };
     }
 }
 
@@ -70,30 +62,19 @@ function findStockSignals(stocks) {
     const signals = [];
     stocks.forEach(stock => {
         const change = stock.change_percent;
-        if (change < -3 || stock.rsi < 40) {
+        if (change < -2 || stock.rsi < 40) {
             signals.push({
                 ...stock,
                 signal_type: 'oversold',
-                signal_label: 'Buy Setup',
-                description: `${stock.name} is showing potential entry at $${stock.price}.`,
-                suggestion: 'Accumulate slowly.',
+                signal_label: 'Entry Point',
+                description: `${stock.name} is testing support at $${stock.price}.`,
+                suggestion: 'Consider long position.',
                 urgency: 'this week',
-                confidence: 75
-            });
-        }
-        if (change > 2.5) {
-            signals.push({
-                ...stock,
-                signal_type: 'breakout',
-                signal_label: 'Momentum',
-                description: `${stock.name} is moving up with ${change.toFixed(2)}% gain.`,
-                suggestion: 'Follow trend.',
-                urgency: 'today',
-                confidence: 80
+                confidence: 78
             });
         }
     });
-    return signals.sort((a, b) => b.confidence - a.confidence);
+    return signals;
 }
 
 module.exports = { scanStocks };
