@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ParaKazanma – Akıllı Finansal Fırsat Tarayıcı</title>
+  <meta name="description" content="Arbitraj, kripto, hisse, freelance ve trend fırsatlarını tarayan akıllı finansal danışman dashboard">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <!-- Animated Background -->
+  <div class="bg-grid"></div>
+  <div class="bg-glow glow-1"></div>
+  <div class="bg-glow glow-2"></div>
+  <div class="bg-glow glow-3"></div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-left">
+      <div class="logo">
+        <span class="logo-icon">💰</span>
+        <div>
+          <h1 class="logo-text">ParaKazanma</h1>
+          <span class="logo-sub">Akıllı Finansal Fırsat Tarayıcı</span>
+        </div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="status-badge" id="statusBadge">
+        <span class="status-dot"></span>
+        <span>Canlı</span>
+      </div>
+      <button class="btn-refresh" id="btnRefresh" title="Verileri Yenile">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+      </button>
+      <span class="update-time" id="updateTime"></span>
+    </div>
+  </header>
+
+  <!-- Summary Bar -->
+  <div class="summary-bar" id="summaryBar">
+    <div class="summary-card">
+      <span class="summary-icon">🎯</span>
+      <div>
+        <span class="summary-value" id="totalOpps">—</span>
+        <span class="summary-label">Toplam Fırsat</span>
+      </div>
+    </div>
+    <div class="summary-card">
+      <span class="summary-icon">🛒</span>
+      <div>
+        <span class="summary-value" id="ecomOpps">—</span>
+        <span class="summary-label">E-Ticaret</span>
+      </div>
+    </div>
+    <div class="summary-card">
+      <span class="summary-icon">₿</span>
+      <div>
+        <span class="summary-value" id="cryptoOpps">—</span>
+        <span class="summary-label">Kripto</span>
+      </div>
+    </div>
+    <div class="summary-card">
+      <span class="summary-icon">📈</span>
+      <div>
+        <span class="summary-value" id="stockOpps">—</span>
+        <span class="summary-label">Hisse</span>
+      </div>
+    </div>
+    <div class="summary-card">
+      <span class="summary-icon">💼</span>
+      <div>
+        <span class="summary-value" id="freelanceOpps">—</span>
+        <span class="summary-label">Freelance</span>
+      </div>
+    </div>
+    <div class="summary-card">
+      <span class="summary-icon">🤖</span>
+      <div>
+        <span class="summary-value" id="aiOpps">—</span>
+        <span class="summary-label">AI Araçları</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI Recommendation Banner -->
+  <div class="ai-banner" id="aiBanner">
+    <div class="ai-banner-icon">🎯</div>
+    <div class="ai-banner-content">
+      <h3>AI Danışman Önerisi</h3>
+      <p id="aiRecommendation">Veriler yükleniyor...</p>
+    </div>
+  </div>
+
+  <!-- Navigation Tabs -->
+  <nav class="tabs" id="navTabs">
+    <button class="tab active" data-tab="report">📋 Günlük Rapor</button>
+    <button class="tab" data-tab="ecommerce">🛒 E-Ticaret</button>
+    <button class="tab" data-tab="crypto">₿ Kripto</button>
+    <button class="tab" data-tab="stocks">📈 Hisse</button>
+    <button class="tab" data-tab="ai-tools">🤖 AI Araçları</button>
+    <button class="tab" data-tab="freelance">💼 Freelance</button>
+    <button class="tab" data-tab="trends">📊 Trendler</button>
+  </nav>
+
+  <!-- Content Area -->
+  <main class="content" id="mainContent">
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p>Fırsatlar taranıyor...</p>
+    </div>
+    <div id="tabContent"></div>
+  </main>
+
+  <footer class="footer">
+    <p>ParaKazanma © 2026 – Akıllı Finansal Fırsat Tarayıcı</p>
+    <p class="footer-sub">CoinGecko API ile gerçek kripto verisi • Diğer modüller simüle edilmiş veri kullanır</p>
+  </footer>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>

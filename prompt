@@ -1,0 +1,627 @@
+{
+    "agent_name": "ParaKazanma AI – Akıllı Finansal Fırsat Tarayıcı",
+    "version": "1.0",
+    "description": "Arbitraj, kripto, hisse, freelance iş ve trend fırsatlarını tarayan, analiz eden ve raporlayan akıllı finansal danışman ajandır.",
+    "language": "tr",
+    "schedule": "daily",
+    "report_time": "09:00",
+    "timezone": "Europe/Istanbul",
+    "modules": [
+        {
+            "id": "e_commerce_arbitrage",
+            "name": "🛒 E-Ticaret Arbitraj Tarayıcı",
+            "description": "Trendyol, Amazon.com.tr ve Hepsiburada arasındaki fiyat farklarını tespit eder. Aynı ürünün farklı platformlardaki fiyat farkı %15'in üzerindeyse fırsat olarak işaretler.",
+            "enabled": true,
+            "sources": [
+                {
+                    "platform": "Trendyol",
+                    "url": "https://www.trendyol.com",
+                    "method": "web_scraping",
+                    "categories": [
+                        "elektronik",
+                        "telefon",
+                        "bilgisayar",
+                        "kulaklık",
+                        "oyun konsolları",
+                        "ev aletleri"
+                    ]
+                },
+                {
+                    "platform": "Amazon.com.tr",
+                    "url": "https://www.amazon.com.tr",
+                    "method": "web_scraping",
+                    "categories": [
+                        "elektronik",
+                        "telefon",
+                        "bilgisayar",
+                        "kulaklık",
+                        "oyun konsolları",
+                        "ev aletleri"
+                    ]
+                },
+                {
+                    "platform": "Hepsiburada",
+                    "url": "https://www.hepsiburada.com",
+                    "method": "web_scraping",
+                    "categories": [
+                        "elektronik",
+                        "telefon",
+                        "bilgisayar",
+                        "kulaklık",
+                        "oyun konsolları",
+                        "ev aletleri"
+                    ]
+                }
+            ],
+            "config": {
+                "min_price_difference_percent": 15,
+                "min_product_price_tl": 100,
+                "max_results": 20,
+                "match_algorithm": "fuzzy_title_match",
+                "confidence_threshold": 0.85
+            },
+            "output_fields": [
+                "product_name",
+                "cheapest_platform",
+                "cheapest_price",
+                "expensive_platform",
+                "expensive_price",
+                "price_difference_percent",
+                "product_links",
+                "estimated_profit_tl"
+            ],
+            "filters": {
+                "exclude_out_of_stock": true,
+                "exclude_marketplace_sellers": false,
+                "min_seller_rating": 4.0
+            }
+        },
+        {
+            "id": "crypto_scanner",
+            "name": "₿ Kripto Fırsat Tarayıcı",
+            "description": "Kripto borsaları arasındaki fiyat farklarını (CEX arbitraj), yeni listelenen coinleri, büyük hacim artışlarını ve piyasa sinyallerini tarar.",
+            "enabled": true,
+            "sources": [
+                {
+                    "platform": "Binance",
+                    "url": "https://api.binance.com",
+                    "method": "api",
+                    "api_docs": "https://binance-docs.github.io/apidocs/spot/en/"
+                },
+                {
+                    "platform": "BtcTurk",
+                    "url": "https://api.btcturk.com",
+                    "method": "api",
+                    "api_docs": "https://docs.btcturk.com/"
+                },
+                {
+                    "platform": "Paribu",
+                    "url": "https://www.paribu.com/api",
+                    "method": "api"
+                },
+                {
+                    "platform": "CoinGecko",
+                    "url": "https://api.coingecko.com/api/v3",
+                    "method": "api",
+                    "usage": "fiyat karşılaştırma & trend verisi"
+                },
+                {
+                    "platform": "CoinMarketCap",
+                    "url": "https://pro-api.coinmarketcap.com/v1",
+                    "method": "api",
+                    "usage": "yeni listelemeler & piyasa verileri"
+                }
+            ],
+            "config": {
+                "check_interval_minutes": 15,
+                "min_arbitrage_percent": 2.0,
+                "track_new_listings": true,
+                "volume_spike_threshold": 3.0,
+                "alert_on_whale_movements": true,
+                "whale_threshold_usd": 1000000
+            },
+            "signals": [
+                {
+                    "type": "arbitrage",
+                    "description": "Aynı coin'in borsalar arasındaki fiyat farkı",
+                    "min_diff_percent": 2.0
+                },
+                {
+                    "type": "new_listing",
+                    "description": "Son 24 saatte büyük borsalara yeni listelenen coinler"
+                },
+                {
+                    "type": "volume_spike",
+                    "description": "Hacmi son 24 saatte 3 kattan fazla artan coinler"
+                },
+                {
+                    "type": "fear_greed_index",
+                    "description": "Piyasa korku/açgözlülük endeksi ile genel piyasa yönü tahmini"
+                }
+            ],
+            "output_fields": [
+                "coin_name",
+                "signal_type",
+                "buy_exchange",
+                "sell_exchange",
+                "buy_price",
+                "sell_price",
+                "potential_profit_percent",
+                "24h_volume_change",
+                "risk_level",
+                "action_link"
+            ]
+        },
+        {
+            "id": "stock_scanner",
+            "name": "📈 Hisse Senedi Tarayıcı",
+            "description": "BIST ve global piyasalarda fırsat yaratan hisse senetlerini, düşük değerlenmiş şirketleri ve momentum sinyallerini tarar.",
+            "enabled": true,
+            "sources": [
+                {
+                    "platform": "Yahoo Finance",
+                    "url": "https://query1.finance.yahoo.com/v8/finance",
+                    "method": "api",
+                    "markets": [
+                        "BIST",
+                        "NASDAQ",
+                        "S&P500"
+                    ]
+                },
+                {
+                    "platform": "Finviz",
+                    "url": "https://finviz.com",
+                    "method": "web_scraping",
+                    "usage": "screener & heat map"
+                },
+                {
+                    "platform": "TradingView",
+                    "url": "https://www.tradingview.com",
+                    "method": "web_scraping",
+                    "usage": "teknik analiz sinyalleri"
+                }
+            ],
+            "config": {
+                "scan_interval_hours": 4,
+                "track_bist_100": true,
+                "track_sp500_movers": true,
+                "rsi_oversold_threshold": 30,
+                "rsi_overbought_threshold": 70,
+                "min_daily_volume": 1000000
+            },
+            "signals": [
+                {
+                    "type": "oversold",
+                    "description": "RSI 30 altına düşen, potansiyel dip fırsatı olan hisseler"
+                },
+                {
+                    "type": "breakout",
+                    "description": "Direnç seviyesini kıran hisseler"
+                },
+                {
+                    "type": "earnings_surprise",
+                    "description": "Beklentilerin üzerinde kar açıklayan şirketler"
+                },
+                {
+                    "type": "insider_buying",
+                    "description": "İçeriden alım yapılan hisseler (güçlü güven sinyali)"
+                }
+            ],
+            "output_fields": [
+                "ticker",
+                "company_name",
+                "signal_type",
+                "current_price",
+                "change_percent_24h",
+                "rsi",
+                "target_price",
+                "risk_level",
+                "analysis_summary",
+                "chart_link"
+            ]
+        },
+        {
+            "id": "ai_tools_scanner",
+            "name": "🤖 Yeni AI Araçları Tarayıcı",
+            "description": "Yeni çıkan AI araçlarını, güncellemeleri ve para kazanma fırsatı sunan AI platformlarını tarar.",
+            "enabled": true,
+            "sources": [
+                {
+                    "platform": "Product Hunt",
+                    "url": "https://www.producthunt.com",
+                    "method": "web_scraping",
+                    "filter": "AI & Machine Learning kategorisi"
+                },
+                {
+                    "platform": "There's An AI For That",
+                    "url": "https://theresanaiforthat.com",
+                    "method": "web_scraping",
+                    "filter": "yeni eklenenler"
+                },
+                {
+                    "platform": "Futurepedia",
+                    "url": "https://www.futurepedia.io",
+                    "method": "web_scraping",
+                    "filter": "trending AI tools"
+                },
+                {
+                    "platform": "GitHub Trending",
+                    "url": "https://github.com/trending",
+                    "method": "web_scraping",
+                    "filter": "AI/ML repositorileri"
+                },
+                {
+                    "platform": "Hacker News",
+                    "url": "https://news.ycombinator.com",
+                    "method": "api",
+                    "filter": "AI ile ilgili başlıklar"
+                }
+            ],
+            "config": {
+                "scan_interval_hours": 6,
+                "min_upvotes": 50,
+                "track_categories": [
+                    "text-generation",
+                    "image-generation",
+                    "video-generation",
+                    "code-assistant",
+                    "automation",
+                    "data-analysis",
+                    "content-creation",
+                    "money-making"
+                ],
+                "highlight_free_tools": true,
+                "highlight_money_making": true
+            },
+            "output_fields": [
+                "tool_name",
+                "category",
+                "description",
+                "pricing",
+                "upvotes",
+                "money_making_potential",
+                "use_case_examples",
+                "tool_link",
+                "launch_date"
+            ]
+        },
+        {
+            "id": "freelance_gig_scanner",
+            "name": "💼 Freelance İş Tarayıcı",
+            "description": "Bionluk ve Upwork'teki yüksek talepli, iyi bütçeli freelance işleri tarar ve en uygun fırsatları sunar.",
+            "enabled": true,
+            "sources": [
+                {
+                    "platform": "Bionluk",
+                    "url": "https://bionluk.com",
+                    "method": "web_scraping",
+                    "categories": [
+                        "yazılım",
+                        "tasarım",
+                        "çeviri",
+                        "video",
+                        "sosyal medya",
+                        "seo",
+                        "yapay zeka"
+                    ]
+                },
+                {
+                    "platform": "Upwork",
+                    "url": "https://www.upwork.com",
+                    "method": "api",
+                    "api_docs": "https://developers.upwork.com/",
+                    "categories": [
+                        "web-development",
+                        "mobile-development",
+                        "ai-ml",
+                        "data-science",
+                        "design",
+                        "writing"
+                    ]
+                },
+                {
+                    "platform": "Fiverr",
+                    "url": "https://www.fiverr.com",
+                    "method": "web_scraping",
+                    "categories": [
+                        "programming",
+                        "ai-services",
+                        "graphics-design",
+                        "video-animation"
+                    ]
+                }
+            ],
+            "config": {
+                "scan_interval_hours": 3,
+                "min_budget_usd": 100,
+                "preferred_skills": [
+                    "python",
+                    "javascript",
+                    "react",
+                    "node.js",
+                    "ai-automation",
+                    "chatgpt-integration",
+                    "web-scraping",
+                    "data-analysis",
+                    "video-editing",
+                    "graphic-design"
+                ],
+                "max_proposals_submitted": 15,
+                "prefer_fixed_price": true,
+                "min_client_rating": 4.0,
+                "min_client_spend_usd": 1000
+            },
+            "output_fields": [
+                "job_title",
+                "platform",
+                "budget_range",
+                "required_skills",
+                "proposals_count",
+                "client_rating",
+                "client_total_spent",
+                "posted_time",
+                "competition_level",
+                "estimated_earning",
+                "job_link"
+            ]
+        },
+        {
+            "id": "trend_scanner",
+            "name": "📊 Trend & Sosyal Medya Tarayıcı",
+            "description": "X (Twitter) trendlerini, Google Trends verilerini ve viral içerikleri tarayarak para kazanma fırsatlarına dönüştürülebilecek trendleri tespit eder.",
+            "enabled": true,
+            "sources": [
+                {
+                    "platform": "X (Twitter)",
+                    "url": "https://api.twitter.com/2",
+                    "method": "api",
+                    "track": [
+                        "Türkiye trendleri",
+                        "global trendler",
+                        "finans hashtag'leri",
+                        "kripto hashtag'leri",
+                        "AI hashtag'leri"
+                    ]
+                },
+                {
+                    "platform": "Google Trends",
+                    "url": "https://trends.google.com",
+                    "method": "web_scraping",
+                    "regions": [
+                        "TR",
+                        "US",
+                        "global"
+                    ],
+                    "categories": [
+                        "business",
+                        "technology",
+                        "finance"
+                    ]
+                },
+                {
+                    "platform": "Reddit",
+                    "url": "https://www.reddit.com",
+                    "method": "api",
+                    "subreddits": [
+                        "r/wallstreetbets",
+                        "r/cryptocurrency",
+                        "r/passive_income",
+                        "r/beermoney",
+                        "r/artificial",
+                        "r/SideProject"
+                    ]
+                },
+                {
+                    "platform": "Eksisozluk",
+                    "url": "https://eksisozluk.com",
+                    "method": "web_scraping",
+                    "track": [
+                        "gündem",
+                        "finans",
+                        "kripto",
+                        "yan gelir"
+                    ]
+                }
+            ],
+            "config": {
+                "scan_interval_hours": 2,
+                "min_engagement_score": 1000,
+                "track_rising_keywords": true,
+                "sentiment_analysis": true,
+                "detect_viral_potential": true
+            },
+            "output_fields": [
+                "trend_topic",
+                "platform",
+                "engagement_score",
+                "sentiment",
+                "velocity",
+                "money_making_angle",
+                "related_opportunities",
+                "trend_link"
+            ]
+        }
+    ],
+    "reporting": {
+        "format": "structured_report",
+        "title_template": "📋 ParaKazanma Günlük Fırsat Raporu – {{date}}",
+        "sections": [
+            {
+                "name": "Özet",
+                "description": "Günün en önemli 7-10 fırsatının kısa özeti, her biri bir cümleyle",
+                "example": "Bugün 7 fırsat bulundu: AirPods Pro Trendyol'da %25 ucuz, Solana BtcTurk-Binance arasında %3.2 arbitraj, yeni AI aracı 'Devin' çıktı, Upwork'te $500 Python gig bekliyor..."
+            },
+            {
+                "name": "🛒 E-Ticaret Arbitraj Fırsatları",
+                "description": "Platformlar arası fiyat farklarının detaylı listesi"
+            },
+            {
+                "name": "₿ Kripto Fırsatları",
+                "description": "Arbitraj, yeni listelemeler ve hacim sinyalleri"
+            },
+            {
+                "name": "📈 Hisse Senedi Fırsatları",
+                "description": "Teknik ve temel analiz sinyalleri"
+            },
+            {
+                "name": "🤖 Yeni AI Araçları",
+                "description": "Para kazandırabilecek yeni AI araçları ve kullanım önerileri"
+            },
+            {
+                "name": "💼 Freelance İş Fırsatları",
+                "description": "Yüksek bütçeli ve düşük rekabetli gig'ler"
+            },
+            {
+                "name": "📊 Gündem & Trendler",
+                "description": "Para kazanmaya dönüştürülebilecek trend konular"
+            },
+            {
+                "name": "🎯 AI Danışman Önerisi",
+                "description": "Tüm verilerin sentezi ve kişiselleştirilmiş aksiyon önerileri"
+            }
+        ],
+        "opportunity_format": {
+            "template": {
+                "title": "string – fırsatın kısa başlığı",
+                "type": "enum – [arbitrage, crypto, stock, ai_tool, freelance, trend]",
+                "description": "string – ne olduğu ve neden fırsat olduğu",
+                "potential_profit": "string – tahmini kazanç",
+                "risk_level": "enum – [düşük, orta, yüksek]",
+                "urgency": "enum – [hemen, bugün, bu hafta]",
+                "action_steps": "array – yapılması gereken adımlar",
+                "links": "array – ilgili linkler",
+                "confidence_score": "number – 0-100 arası güven skoru"
+            }
+        }
+    },
+    "delivery": {
+        "channels": [
+            {
+                "type": "email",
+                "enabled": true,
+                "config": {
+                    "recipient": "{{USER_EMAIL}}",
+                    "subject_template": "💰 ParaKazanma Raporu – {{date}} | {{opportunity_count}} Fırsat Bulundu",
+                    "send_time": "09:00",
+                    "format": "html",
+                    "include_charts": true
+                }
+            },
+            {
+                "type": "dashboard",
+                "enabled": true,
+                "config": {
+                    "url": "http://localhost:3000/dashboard",
+                    "realtime_updates": true,
+                    "widgets": [
+                        "opportunity_feed",
+                        "profit_tracker",
+                        "trend_heatmap",
+                        "portfolio_overview",
+                        "alert_center"
+                    ]
+                }
+            },
+            {
+                "type": "telegram",
+                "enabled": false,
+                "config": {
+                    "bot_token": "{{TELEGRAM_BOT_TOKEN}}",
+                    "chat_id": "{{TELEGRAM_CHAT_ID}}",
+                    "alert_on_high_urgency": true
+                }
+            },
+            {
+                "type": "webhook",
+                "enabled": false,
+                "config": {
+                    "url": "{{WEBHOOK_URL}}",
+                    "method": "POST",
+                    "headers": {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer {{WEBHOOK_TOKEN}}"
+                    }
+                }
+            }
+        ],
+        "alert_rules": [
+            {
+                "condition": "opportunity.potential_profit_percent > 20",
+                "action": "instant_notification",
+                "channels": [
+                    "email",
+                    "telegram"
+                ],
+                "message": "🚨 Yüksek Karlı Fırsat: {{opportunity.title}} – %{{opportunity.potential_profit_percent}} potansiyel kazanç!"
+            },
+            {
+                "condition": "opportunity.urgency == 'hemen'",
+                "action": "instant_notification",
+                "channels": [
+                    "telegram"
+                ],
+                "message": "⚡ Acil Fırsat: {{opportunity.title}} – Hemen aksiyon al!"
+            }
+        ]
+    },
+    "ai_analysis": {
+        "enabled": true,
+        "model": "gpt-4o",
+        "tasks": [
+            {
+                "name": "risk_assessment",
+                "description": "Her fırsat için risk/ödül analizi yapar",
+                "prompt": "Bu fırsatın risk seviyesini değerlendir. Potansiyel kazancı, olası riskleri ve tavsiye edilen stratejiyi belirt."
+            },
+            {
+                "name": "opportunity_ranking",
+                "description": "Tüm fırsatları karlılık, risk ve aciliyet bazında sıralar",
+                "prompt": "Bugünkü tüm fırsatları değerlendir ve en iyiden en kötüye sırala. Her biri için kısa bir gerekçe yaz."
+            },
+            {
+                "name": "market_context",
+                "description": "Genel piyasa bağlamında fırsatları yorumlar",
+                "prompt": "Bugünkü piyasa koşullarını özetle ve bulunan fırsatların bu koşullarda ne kadar anlamlı olduğunu yorumla."
+            },
+            {
+                "name": "actionable_advice",
+                "description": "Kullanıcıya net, uygulanabilir tavsiyeler sunar",
+                "prompt": "Bugün en önemli 3 fırsat için adım adım ne yapılması gerektiğini yaz. Net, basit ve uygulanabilir olsun."
+            }
+        ]
+    },
+    "user_preferences": {
+        "risk_tolerance": "orta",
+        "investment_budget_tl": 10000,
+        "preferred_categories": [
+            "crypto",
+            "freelance",
+            "ai_tools",
+            "e_commerce"
+        ],
+        "excluded_categories": [],
+        "language": "tr",
+        "currency": "TRY",
+        "notification_frequency": "daily",
+        "show_only_actionable": true
+    },
+    "system_config": {
+        "log_level": "info",
+        "retry_on_failure": true,
+        "max_retries": 3,
+        "request_delay_ms": 2000,
+        "proxy_enabled": false,
+        "cache_results_hours": 1,
+        "rate_limit_per_minute": 30,
+        "data_storage": {
+            "type": "json_file",
+            "path": "./data/opportunities.json",
+            "keep_history_days": 30
+        },
+        "error_handling": {
+            "notify_on_module_failure": true,
+            "fallback_to_cached_data": true,
+            "skip_failed_modules": true
+        }
+    }
+}

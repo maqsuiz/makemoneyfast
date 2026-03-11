@@ -1,0 +1,16 @@
+{
+    "name": "parakazanma",
+    "version": "1.0.0",
+    "description": "ParaKazanma – Akıllı Finansal Fırsat Tarayıcı Dashboard",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js",
+        "dev": "node server.js"
+    },
+    "dependencies": {
+        "@supabase/supabase-js": "^2.39.0",
+        "express": "^4.18.2",
+        "node-fetch": "^2.7.0",
+        "node-cron": "^3.0.3"
+    }
+}
