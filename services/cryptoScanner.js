@@ -57,7 +57,7 @@ async function scanCrypto() {
     };
   } catch (error) {
     console.error('Crypto scan error:', error.message);
-    return getFallbackData();
+    return getFallbackData(error.message);
   }
 }
 
@@ -96,11 +96,11 @@ function generateArbitrageOpportunities(coins) {
   });
 }
 
-function getFallbackData() {
+function getFallbackData(errorMsg = 'Unknown Error') {
   return {
     module: 'crypto',
     last_updated: new Date().toISOString(),
-    data_source: 'Fallback Mode',
+    data_source: `Fallback Mode (${errorMsg})`,
     market_overview: { total_market_cap: 0, top_gainer: {}, top_loser: {} },
     opportunities: [],
     arbitrage: [],

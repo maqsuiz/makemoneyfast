@@ -16,52 +16,32 @@ app.use(express.static('public'));
 app.use(express.json());
 
 // Initialize Database
-initDb().catch(err => console.error('Database init failed:', err));
+initDb().catch(err => console.error('Database connection failed:', err));
 
-// Endpoints
+// Core API Endpoints
 app.get('/api/crypto', async (req, res) => {
-    try {
-        const data = await scanCrypto();
-        res.json(data);
-    } catch (e) {
-        res.status(500).json({ error: e.message });
-    }
+    try { res.json(await scanCrypto()); }
+    catch (e) { res.status(500).json({ error: e.message }); }
 });
 
 app.get('/api/stocks', async (req, res) => {
-    try {
-        const data = await scanStocks();
-        res.json(data);
-    } catch (e) {
-        res.status(500).json({ error: e.message });
-    }
+    try { res.json(await scanStocks()); }
+    catch (e) { res.status(500).json({ error: e.message }); }
 });
 
 app.get('/api/ai-tools', async (req, res) => {
-    try {
-        const data = await scanAITools();
-        res.json(data);
-    } catch (e) {
-        res.status(500).json({ error: e.message });
-    }
+    try { res.json(await scanAITools()); }
+    catch (e) { res.status(500).json({ error: e.message }); }
 });
 
 app.get('/api/freelance', async (req, res) => {
-    try {
-        const data = await scanFreelance();
-        res.json(data);
-    } catch (e) {
-        res.status(500).json({ error: e.message });
-    }
+    try { res.json(await scanFreelance()); }
+    catch (e) { res.status(500).json({ error: e.message }); }
 });
 
 app.get('/api/trends', async (req, res) => {
-    try {
-        const data = await scanTrends();
-        res.json(data);
-    } catch (e) {
-        res.status(500).json({ error: e.message });
-    }
+    try { res.json(await scanTrends()); }
+    catch (e) { res.status(500).json({ error: e.message }); }
 });
 
 app.get('/api/report', async (req, res) => {
@@ -82,11 +62,11 @@ app.get('/api/report', async (req, res) => {
             trends
         });
 
-        // Background save for high confidence items
+        // Background persistence for high confidence results
         if (report.opportunities) {
             report.opportunities
                 .filter(opp => opp.confidence > 85)
-                .forEach(opp => saveOpportunity(opp).catch(err => console.error('DB Save error:', err)));
+                .forEach(opp => saveOpportunity(opp).catch(err => console.error('DB Async Save Err:', err)));
         }
 
         res.json(report);
@@ -96,7 +76,7 @@ app.get('/api/report', async (req, res) => {
 });
 
 app.post('/api/refresh', (req, res) => {
-    res.json({ success: true, message: 'Scan triggered' });
+    res.json({ success: true });
 });
 
 app.get('/', (req, res) => {
@@ -104,5 +84,5 @@ app.get('/', (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
+    console.log(`Server live on port ${PORT}`);
 });
