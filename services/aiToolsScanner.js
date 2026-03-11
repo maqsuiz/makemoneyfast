@@ -14,15 +14,14 @@ async function scanAITools() {
             data_source: 'Küratörlü AI Araç Veritabanı',
             summary: {
                 total_new_tools: tools.length,
-                free_tools: tools.filter(t => t.pricing === 'Ücretsiz' || t.pricing === 'Freemium').length,
-                money_making_tools: tools.filter(t => t.money_making_potential === 'Yüksek').length
+                free_tools: tools.filter(t => t.pricing === 'Free' || t.pricing === 'Freemium').length,
+                money_making_tools: tools.filter(t => t.money_making_potential === 'High').length
             },
             tools
         };
     } catch (error) {
-        console.error('AI araç tarama hatası:', error.message);
-        return { module: 'ai_tools', title: '🤖 Yeni AI Araçları', icon: '🤖', tools: [], error: error.message };
-        return { module: 'kombai_tools', title: 'Yeni KOMBAI Araçları', tools: [], error: error.message };
+        console.error('KOMBAI scan error:', error.message);
+        return { module: 'kombai_tools', title: 'New KOMBAI Tools', tools: [], error: error.message };
     }
 }
 
@@ -54,15 +53,15 @@ function getAITools() {
         },
         {
             name: 'Bolt.new',
-            category: 'Web Geliştirme',
-            description: 'Prompt ile tam çalışan web uygulamaları oluşturur. Backend, frontend ve deployment dahil.',
+            category: 'Web Development',
+            description: 'Create full-stack web apps with prompts. Includes backend, frontend, and deployment.',
             pricing: 'Freemium',
             upvotes: 3100,
-            money_making_potential: 'Yüksek',
+            money_making_potential: 'High',
             use_cases: [
-                'Müşterilere hızlı MVP geliştir ve sat',
-                'SaaS prototipleri oluştur',
-                'Freelance web projeleri için kullan'
+                'Develop and sell MVPs rapidly',
+                'Create SaaS prototypes',
+                'Use for freelance web projects'
             ],
             link: 'https://bolt.new',
             launch_date: '2024-10',
@@ -70,31 +69,31 @@ function getAITools() {
         },
         {
             name: 'Midjourney v7',
-            category: 'Görsel Üretimi',
-            description: 'AI ile ultra-gerçekçi görseller oluşturur. Yeni versiyon daha tutarlı yüzler ve metinler üretir.',
-            pricing: 'Ücretli ($10/ay)',
+            category: 'Image Generation',
+            description: 'Create ultra-realistic images with AI. New version has more consistent faces and text.',
+            pricing: 'Paid ($10/mo)',
             upvotes: 4500,
-            money_making_potential: 'Yüksek',
+            money_making_potential: 'High',
             use_cases: [
-                'Print-on-demand ürünler tasarla (Etsy, Redbubble)',
-                'Sosyal medya içerik paketi sat',
-                'Logo ve marka kimliği tasarla'
+                'Design print-on-demand products (Etsy, Redbubble)',
+                'Sell social media content packages',
+                'Design logos and brand identity'
             ],
             link: 'https://midjourney.com',
             launch_date: '2025-01',
             trend: 'hot'
         },
         {
-            name: 'Cursor AI',
-            category: 'Kod Asistanı',
-            description: 'AI destekli kod editörü. Kod yazarken gerçek zamanlı öneriler, otomatik refactoring ve bug fix.',
+            name: 'Cursor',
+            category: 'Code Assistant',
+            description: 'AI-powered code editor. Real-time suggestions, automatic refactoring, and bug fixes.',
             pricing: 'Freemium',
             upvotes: 2100,
-            money_making_potential: 'Orta',
+            money_making_potential: 'Medium',
             use_cases: [
-                'Kodlama hızını 3-5x artır',
-                'Freelance projeleri daha hızlı teslim et',
-                'Yeni programlama dilleri öğren'
+                'Increase coding speed 3-5x',
+                'Deliver freelance projects faster',
+                'Learn new programming languages'
             ],
             link: 'https://cursor.sh',
             launch_date: '2024-06',
@@ -102,15 +101,15 @@ function getAITools() {
         },
         {
             name: 'ElevenLabs',
-            category: 'Ses Üretimi',
-            description: 'AI ile ultra-gerçekçi sesli anlatım üretir. 30+ dilde klonlama ve dubbing desteği.',
+            category: 'Voice Generation',
+            description: 'Ultra-realistic voiceover generation. Cloning and dubbing support in 30+ languages.',
             pricing: 'Freemium',
             upvotes: 1800,
-            money_making_potential: 'Yüksek',
+            money_making_potential: 'High',
             use_cases: [
-                'Podcast / audiobook prodüksiyonu',
-                'YouTube kanalları için seslendirme',
-                'Kurumsal eğitim materyalleri üret'
+                'Podcast / audiobook production',
+                'Voiceover for YouTube channels',
+                'Produce corporate training materials'
             ],
             link: 'https://elevenlabs.io',
             launch_date: '2024-01',
@@ -118,31 +117,31 @@ function getAITools() {
         },
         {
             name: 'Gamma AI',
-            category: 'Sunum & Doküman',
-            description: 'AI ile profesyonel sunumlar, belgeler ve web sayfaları oluşturur. Tek prompt ile komple sunum.',
+            category: 'Presentation & Docs',
+            description: 'Create professional presentations, documents, and web pages with AI. Full deck in one prompt.',
             pricing: 'Freemium',
             upvotes: 1500,
-            money_making_potential: 'Orta',
+            money_making_potential: 'Medium',
             use_cases: [
-                'Kurumsal sunum hizmeti ver',
-                'Pitch deck hazırlama servisi',
-                'Eğitim materyalleri oluştur ve sat'
+                'Provide corporate presentation services',
+                'Pitch deck preparation service',
+                'Create and sell training materials'
             ],
             link: 'https://gamma.app',
             launch_date: '2024-03',
             trend: 'stable'
         },
         {
-            name: 'Perplexity AI',
-            category: 'Araştırma',
-            description: 'AI destekli arama ve araştırma motoru. Kaynaklı, doğrulanmış yanıtlar üretir.',
+            name: 'Perplexity',
+            category: 'Research',
+            description: 'AI-powered search and research engine. Produces cited, verified answers.',
             pricing: 'Freemium',
             upvotes: 3800,
-            money_making_potential: 'Orta',
+            money_making_potential: 'Medium',
             use_cases: [
-                'SEO araştırma ve içerik üretimi',
-                'Pazar araştırma raporları hazırla',
-                'Rekabet analizi yap ve raporla'
+                'SEO research and content generation',
+                'Prepare market research reports',
+                'Competitor analysis and reporting'
             ],
             link: 'https://perplexity.ai',
             launch_date: '2024-01',
@@ -150,15 +149,15 @@ function getAITools() {
         },
         {
             name: 'Kling AI',
-            category: 'Video Üretimi',
-            description: 'Çin merkezli güçlü AI video üretici. Sora\'ya alternatif, bazı senaryolarda daha iyi sonuçlar.',
-            pricing: 'Ücretsiz (günlük limit)',
+            category: 'Video Generation',
+            description: 'Powerful AI video generator. Sora alternative, better results in some scenarios.',
+            pricing: 'Free (daily limit)',
             upvotes: 1200,
-            money_making_potential: 'Yüksek',
+            money_making_potential: 'High',
             use_cases: [
-                'Ücretsiz video içerik üretimi',
-                'Kısa video reklamlar oluştur',
-                'Sosyal medya videoları üret'
+                'Generate free video content',
+                'Create short video ads',
+                'Produce social media videos'
             ],
             link: 'https://klingai.com',
             launch_date: '2024-07',
@@ -166,20 +165,20 @@ function getAITools() {
         },
         {
             name: 'n8n AI Automation',
-            category: 'Otomasyon',
-            description: 'Açık kaynak AI otomasyon platformu. No-code ile karmaşık AI iş akışları oluşturur.',
-            pricing: 'Ücretsiz (Self-hosted)',
+            category: 'Automation',
+            description: 'Open-source AI automation platform. Create complex AI workflows with no-code.',
+            pricing: 'Free (Self-hosted)',
             upvotes: 2200,
-            money_making_potential: 'Yüksek',
+            money_making_potential: 'High',
             use_cases: [
-                'Müşterilere AI otomasyon servisi kur',
-                'Kendi iş süreçlerini otomatize et',
-                'AI chatbot ve asistan servisi sun'
+                'Set up AI automation services for clients',
+                'Automate your own business processes',
+                'Offer AI chatbot and assistant services'
             ],
             link: 'https://n8n.io',
             launch_date: '2024-08',
             trend: 'hot'
-        }
+        },
     ];
 }
 

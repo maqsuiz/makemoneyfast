@@ -1,7 +1,7 @@
 {
     "name": "parakazanma",
     "version": "1.0.0",
-    "description": "ParaKazanma – Akıllı Finansal Fırsat Tarayıcı Dashboard",
+    "description": "Smart Financial Scanner – Dashboard for discovering opportunities",
     "main": "server.js",
     "scripts": {
         "start": "node server.js",

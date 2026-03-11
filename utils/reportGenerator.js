@@ -13,11 +13,11 @@ function generateReport(allData) {
     if (allData.ecommerce && allData.ecommerce.opportunities) {
         allData.ecommerce.opportunities.slice(0, 3).forEach(o => {
             opportunities.push({
-                title: `${o.product_name} – %${o.price_difference_percent} fiyat farkı`,
-                type: 'arbitrage', module: '🛒 E-Ticaret',
-                description: `${o.cheapest_platform}'da ${o.cheapest_price.toLocaleString('tr-TR')}₺, ${o.expensive_platform}'da ${o.expensive_price.toLocaleString('tr-TR')}₺`,
+                title: `${o.product_name} – %${o.price_difference_percent} price difference`,
+                type: 'arbitrage', module: 'E-Commerce',
+                description: `${o.cheapest_platform} at ${o.cheapest_price.toLocaleString('tr-TR')}₺, ${o.expensive_platform} at ${o.expensive_price.toLocaleString('tr-TR')}₺`,
                 potential_profit: `${o.estimated_profit_tl.toLocaleString('tr-TR')}₺`,
-                risk_level: 'düşük', urgency: 'bugün', confidence: 85,
+                risk_level: 'low', urgency: 'today', confidence: 85,
                 links: o.links
             });
         });
@@ -28,11 +28,11 @@ function generateReport(allData) {
         if (allData.crypto.arbitrage) {
             allData.crypto.arbitrage.slice(0, 2).forEach(a => {
                 opportunities.push({
-                    title: `${a.coin} Arbitraj: ${a.buy_exchange}→${a.sell_exchange} %${a.spread_percent}`,
-                    type: 'crypto', module: '₿ Kripto',
-                    description: `${a.buy_exchange}'da $${a.buy_price}, ${a.sell_exchange}'de $${a.sell_price}`,
-                    potential_profit: `$${a.potential_profit_per_1000} (her $1000 için)`,
-                    risk_level: 'orta', urgency: 'hemen', confidence: 72,
+                    title: `${a.coin} Arbitrage: ${a.buy_exchange}→${a.sell_exchange} %${a.spread_percent}`,
+                    type: 'crypto', module: 'Crypto',
+                    description: `${a.buy_exchange} at $${a.buy_price}, ${a.sell_exchange} at $${a.sell_price}`,
+                    potential_profit: `$${a.potential_profit_per_1000} (per $1000)`,
+                    risk_level: 'medium', urgency: 'immediate', confidence: 72,
                     links: { buy: a.buy_exchange, sell: a.sell_exchange }
                 });
             });
@@ -40,11 +40,11 @@ function generateReport(allData) {
         if (allData.crypto.opportunities) {
             allData.crypto.opportunities.filter(o => o.signal_type === 'dip' || o.signal_type === 'strong_dip').slice(0, 2).forEach(o => {
                 opportunities.push({
-                    title: `${o.coin_name} (${o.symbol}) – Dip Fırsatı %${Math.abs(o.price_change_24h).toFixed(1)} düşüş`,
-                    type: 'crypto', module: '₿ Kripto',
-                    description: `24s değişim: %${o.price_change_24h.toFixed(1)}, Risk: ${o.risk_level}`,
-                    potential_profit: 'Dip alım fırsatı',
-                    risk_level: o.risk_level, urgency: 'bugün', confidence: 65,
+                    title: `${o.coin_name} (${o.symbol}) – Dip Opportunity %${Math.abs(o.price_change_24h).toFixed(1)} drop`,
+                    type: 'crypto', module: 'Crypto',
+                    description: `24h change: %${o.price_change_24h.toFixed(1)}, Risk: ${o.risk_level}`,
+                    potential_profit: 'Dip buy opportunity',
+                    risk_level: o.risk_level, urgency: 'today', confidence: 65,
                     links: { detail: o.action_link }
                 });
             });
@@ -59,7 +59,7 @@ function generateReport(allData) {
                 type: 'stock', module: 'Hisse',
                 description: s.description,
                 potential_profit: s.suggestion,
-                risk_level: s.rsi < 30 ? 'orta' : 'yüksek', urgency: s.urgency, confidence: s.confidence,
+                risk_level: s.rsi < 30 ? 'medium' : 'high', urgency: s.urgency, confidence: s.confidence,
                 links: { chart: s.chart_link }
             });
         });
@@ -73,7 +73,7 @@ function generateReport(allData) {
                 type: 'ai_tool', module: 'KOMBAI',
                 description: t.description,
                 potential_profit: t.use_cases[0],
-                risk_level: 'düşük', urgency: 'bu hafta', confidence: 78,
+                risk_level: 'low', urgency: 'this week', confidence: 78,
                 links: { tool: t.link }
             });
         });
@@ -85,9 +85,9 @@ function generateReport(allData) {
             opportunities.push({
                 title: `${j.platform}: ${j.title}`,
                 type: 'freelance', module: 'Freelance',
-                description: `Bütçe: $${j.budget_min}-$${j.budget_max} | Rekabet: ${j.competition}`,
+                description: `Budget: $${j.budget_min}-$${j.budget_max} | Comp: ${j.competition}`,
                 potential_profit: `$${j.budget_max}`,
-                risk_level: 'düşük', urgency: j.urgency, confidence: 82,
+                risk_level: 'low', urgency: j.urgency, confidence: 82,
                 links: { job: j.link }
             });
         });
@@ -101,7 +101,7 @@ function generateReport(allData) {
                 type: 'trend', module: 'Trend',
                 description: `${t.platform} | ${t.velocity} | Engagement: ${t.engagement.toLocaleString()}`,
                 potential_profit: t.money_angle,
-                risk_level: 'düşük', urgency: 'bu hafta', confidence: 70,
+                risk_level: 'low', urgency: 'this week', confidence: 70,
                 links: { trend: t.link }
             });
         });
@@ -122,9 +122,9 @@ function generateReport(allData) {
 }
 
 function generateRecommendation(opps) {
-    if (!opps.length) return 'Bugün belirgin bir fırsat bulunamadı. Piyasayı takip etmeye devam edin.';
+    if (!opps.length) return 'No distinct opportunities found today. Keep monitoring the market.';
     const top = opps[0];
-    return `🎯 Bugünkü en güçlü fırsat: "${top.title}". ${top.description}. Tahmini kazanç: ${top.potential_profit}. Risk: ${top.risk_level}. Bu fırsatı kaçırmayın!`;
+    return `Best opportunity today: "${top.title}". ${top.description}. Est. profit: ${top.potential_profit}. Risk: ${top.risk_level}. Do not miss it!`;
 }
 
 module.exports = { generateReport };

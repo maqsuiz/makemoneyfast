@@ -81,7 +81,7 @@ app.get('/api/report', async (req, res) => {
 app.post('/api/refresh', (req, res) => {
     cache = {};
     cacheTime = {};
-    res.json({ success: true, message: 'Cache temizlendi, veriler yenilenecek.' });
+    res.json({ success: true, message: 'Cache cleared, data will refresh.' });
 });
 
 // Serve dashboard
@@ -90,7 +90,7 @@ app.get('/', (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`\n🚀 ParaKazanma Dashboard çalışıyor!`);
-    console.log(`📊 Dashboard: http://localhost:${PORT}`);
-    console.log(`📋 API Rapor: http://localhost:${PORT}/api/report\n`);
+    console.log(`\nSCANNER Dashboard is running!`);
+    console.log(`Dashboard: http://localhost:${PORT}`);
+    console.log(`API Report: http://localhost:${PORT}/api/report\n`);
 });

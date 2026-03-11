@@ -200,7 +200,7 @@ function renderCrypto(data) {
     <h3 style="font-size:15px;font-weight:700;margin-bottom:12px">MARKET DATA</h3>
     <div class="card" style="overflow-x:auto">
       <table class="crypto-table">
-        <thead><tr><th>Coin</th><th>Fiyat</th><th>24s Değişim</th><th>Sinyal</th><th>Risk</th><th></th></tr></thead>
+        <thead><tr><th>Coin</th><th>Price</th><th>24h Change</th><th>Signal</th><th>Risk</th><th></th></tr></thead>
         <tbody>
           ${coins.slice(0, 15).map(c => `
             <tr>
@@ -208,8 +208,8 @@ function renderCrypto(data) {
               <td>$${(c.current_price || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
               <td class="${(c.price_change_24h || 0) >= 0 ? 'change-positive' : 'change-negative'}">${(c.price_change_24h || 0) >= 0 ? '+' : ''}${(c.price_change_24h || 0).toFixed(2)}%</td>
               <td><span class="meta-tag">${formatSignal(c.signal_type)}</span></td>
-              <td><span class="card-badge ${c.risk_level === 'düşük' ? 'badge-green' : c.risk_level === 'yüksek' ? 'badge-red' : 'badge-yellow'}">${c.risk_level || '-'}</span></td>
-              <td><a class="card-link" href="${c.action_link || '#'}" target="_blank">Detay</a></td>
+              <td><span class="card-badge ${c.risk_level === 'low' ? 'badge-green' : c.risk_level === 'high' ? 'badge-red' : 'badge-yellow'}">${c.risk_level || '-'}</span></td>
+              <td><a class="card-link" href="${c.action_link || '#'}" target="_blank">Details</a></td>
             </tr>
           `).join('')}
         </tbody>
@@ -256,11 +256,11 @@ function renderStocks(data) {
           </div>
           <div class="card-footer">
             <span class="meta-tag">${s.market} • ${s.sector}</span>
-            <a class="card-link" href="${s.chart_link}" target="_blank">Grafiğe Git</a>
+            <a class="card-link" href="${s.chart_link}" target="_blank">Go to Chart</a>
           </div>
         </div>
       `).join('')}
-    </div>` : '<p style="color:var(--text-muted)">Aktif sinyal bulunamadı.</p>'}`;
+    </div>` : '<p style="color:var(--text-muted)">No active signals found.</p>'}`;
 }
 
 function renderAITools(data) {
@@ -285,7 +285,7 @@ function renderAITools(data) {
               <span class="meta-tag">${t.category}</span>
               <span class="meta-tag">PRICE: ${t.pricing}</span>
               <span class="meta-tag">UP: ${t.upvotes}</span>
-              <span class="card-badge ${t.money_making_potential === 'Yüksek' ? 'badge-green' : 'badge-yellow'}">PROFIT: ${t.money_making_potential}</span>
+              <span class="card-badge ${t.money_making_potential === 'High' ? 'badge-green' : 'badge-yellow'}">PROFIT: ${t.money_making_potential}</span>
             </div>
             <ul class="use-cases">
               ${t.use_cases.map(u => `<li>${u}</li>`).join('')}
@@ -293,7 +293,7 @@ function renderAITools(data) {
           </div>
           <div class="card-footer">
             <span class="meta-tag">📅 ${t.launch_date}</span>
-            <a class="card-link" href="${t.link}" target="_blank">Aracı İncele</a>
+            <a class="card-link" href="${t.link}" target="_blank">Review Tool</a>
           </div>
         </div>
       `).join('')}
@@ -311,17 +311,17 @@ function renderFreelance(data) {
       </div>
     </div>
     <div class="summary-bar" style="padding:0 0 16px 0;grid-template-columns:repeat(4,1fr)">
-      <div class="summary-card"><div><span class="summary-value">${s.total_jobs || 0}</span><span class="summary-label">Toplam İş</span></div></div>
-      <div class="summary-card"><div><span class="summary-value">${s.high_budget || 0}</span><span class="summary-label">$500+ Bütçe</span></div></div>
-      <div class="summary-card"><div><span class="summary-value">${s.low_competition || 0}</span><span class="summary-label">Düşük Rekabet</span></div></div>
-      <div class="summary-card"><div><span class="summary-value">$${(s.total_potential || 0).toLocaleString()}</span><span class="summary-label">Toplam Potansiyel</span></div></div>
+      <div class="summary-card"><div><span class="summary-value">${s.total_jobs || 0}</span><span class="summary-label">Total Jobs</span></div></div>
+      <div class="summary-card"><div><span class="summary-value">${s.high_budget || 0}</span><span class="summary-label">$500+ Budget</span></div></div>
+      <div class="summary-card"><div><span class="summary-value">${s.low_competition || 0}</span><span class="summary-label">Low Competition</span></div></div>
+      <div class="summary-card"><div><span class="summary-value">$${(s.total_potential || 0).toLocaleString()}</span><span class="summary-label">Total Potential</span></div></div>
     </div>
     <div class="card-grid">
       ${jobs.map((j, i) => `
         <div class="card" style="animation-delay:${i * 0.06}s">
           <div class="card-header">
             <span class="card-title">${j.title}</span>
-            <span class="card-badge ${j.competition === 'Düşük' ? 'badge-green' : j.competition === 'Yüksek' ? 'badge-red' : 'badge-yellow'}">${j.competition} Rekabet</span>
+            <span class="card-badge ${j.competition === 'Low' ? 'badge-green' : j.competition === 'High' ? 'badge-red' : 'badge-yellow'}">${j.competition} Competition</span>
           </div>
           <div class="card-body">
             <p>${j.desc}</p>
@@ -337,8 +337,8 @@ function renderFreelance(data) {
             </div>
           </div>
           <div class="card-footer">
-            <span class="meta-tag ${j.urgency === 'hemen' ? 'badge-red' : j.urgency === 'bugün' ? 'badge-yellow' : ''}">${j.urgency}</span>
-            <a class="card-link" href="${j.link}" target="_blank">İşe Git</a>
+            <span class="meta-tag ${j.urgency === 'immediate' ? 'badge-red' : j.urgency === 'today' ? 'badge-yellow' : ''}">${j.urgency}</span>
+            <a class="card-link" href="${j.link}" target="_blank">View Job</a>
           </div>
         </div>
       `).join('')}
@@ -359,21 +359,21 @@ function renderTrends(data) {
         <div class="card" style="animation-delay:${i * 0.06}s">
           <div class="card-header">
             <span class="card-title">${t.topic}</span>
-            <span class="tool-trend ${t.velocity.includes('Hızla') ? 'trend-hot' : t.velocity.includes('Yüksel') ? 'trend-rising' : 'trend-stable'}">${t.velocity}</span>
+            <span class="tool-trend ${t.velocity.includes('Rapidly') ? 'trend-hot' : t.velocity.includes('Rising') ? 'trend-rising' : 'trend-stable'}">${t.velocity}</span>
           </div>
           <div class="card-body">
             <p style="color:var(--accent-3);font-weight:600">INFO: ${t.money_angle}</p>
             <div class="card-meta" style="margin-top:10px">
               <span class="meta-tag">${t.platform}</span>
               <span class="meta-tag">ENGAGEMENT: ${t.engagement.toLocaleString()}</span>
-              <span class="meta-tag ${t.sentiment === 'Pozitif' || t.sentiment === 'Çok Pozitif' || t.sentiment === 'Boğa' ? 'badge-green' : t.sentiment === 'Negatif' ? 'badge-red' : 'badge-yellow'}">${t.sentiment}</span>
+              <span class="meta-tag ${t.sentiment === 'Positive' || t.sentiment === 'Very Positive' || t.sentiment === 'Bullish' ? 'badge-green' : t.sentiment === 'Negative' ? 'badge-red' : 'badge-yellow'}">${t.sentiment}</span>
               <span class="meta-tag">${t.category}</span>
             </div>
             ${t.related ? `<div class="skill-tags" style="margin-top:8px">${t.related.map(r => `<span class="skill-tag">${r}</span>`).join('')}</div>` : ''}
           </div>
           <div class="card-footer">
             <span></span>
-            <a class="card-link" href="${t.link}" target="_blank">Trendi İncele</a>
+            <a class="card-link" href="${t.link}" target="_blank">See Trend</a>
           </div>
         </div>
       `).join('')}

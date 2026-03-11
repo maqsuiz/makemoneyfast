@@ -12,7 +12,7 @@ async function scanTrends() {
         { topic: 'YouTube Shorts Monetization', platform: 'Google Trends', engagement: 45000, sentiment: 'Positive', velocity: 'Rising', money_angle: 'Generate Shorts with AI, earn ad revenue', related: ['Sora AI', 'video editing', 'content creation'], link: 'https://trends.google.com/trends/explore?q=youtube+shorts+para', category: 'content' },
         { topic: 'Freelance AI Automation', platform: 'X / Upwork', engagement: 19000, sentiment: 'Very Positive', velocity: 'Rapidly Rising', money_angle: 'Offer AI automation setup services to companies ($500-5000/project)', related: ['Make.com', 'Zapier', 'n8n'], link: 'https://twitter.com/search?q=AI+automation+freelance', category: 'career' },
         { topic: 'Print on Demand + AI Art', platform: 'Reddit / Etsy', engagement: 32000, sentiment: 'Positive', velocity: 'Stable', money_angle: 'Generate designs with Midjourney, sell on Etsy/Redbubble', related: ['Midjourney', 'Etsy shop', 'passive income'], link: 'https://www.reddit.com/r/passive_income', category: 'e-commerce' },
-        { topic: 'Turkish Lira Depreciation', platform: 'X / Ekşi Sözlük', engagement: 85000, sentiment: 'Negative', velocity: 'Stable', money_angle: 'Get dollar-based freelance jobs, live with TL (arbitrage)', related: ['foreign exchange', 'inflation', 'side income'], link: 'https://eksisozluk.com/dolar--32218', category: 'finance' }
+        { topic: 'Turkish Lira Movement', platform: 'X / Market Data', engagement: 85000, sentiment: 'Negative', velocity: 'Stable', money_angle: 'Leverage currency differences for arbitrage', related: ['forex', 'inflation', 'side income'], link: 'https://twitter.com/search?q=USDTRY', category: 'finance' }
     ];
 
     return {

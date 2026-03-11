@@ -12,7 +12,7 @@ async function scanStocks() {
             module: 'stocks',
             title: 'Stock Scanner',
             last_updated: new Date().toISOString(),
-            data_source: 'Simüle Edilen Piyasa Verisi',
+            data_source: 'Simulated Market Data',
             market_summary: {
                 bist100_change: (Math.random() * 4 - 2).toFixed(2),
                 sp500_change: (Math.random() * 3 - 1.5).toFixed(2),
@@ -31,16 +31,16 @@ async function scanStocks() {
 
 function generateStockData() {
     const bist_stocks = [
-        { ticker: 'THYAO', name: 'Türk Hava Yolları', sector: 'Havacılık', price: 312.5, market: 'BIST' },
-        { ticker: 'ASELS', name: 'Aselsan', sector: 'Savunma', price: 57.8, market: 'BIST' },
-        { ticker: 'SISE', name: 'Şişe Cam', sector: 'Cam', price: 48.2, market: 'BIST' },
-        { ticker: 'KCHOL', name: 'Koç Holding', sector: 'Holding', price: 198.4, market: 'BIST' },
-        { ticker: 'BIMAS', name: 'BİM Mağazalar', sector: 'Perakende', price: 680.0, market: 'BIST' },
-        { ticker: 'TUPRS', name: 'Tüpraş', sector: 'Enerji', price: 175.6, market: 'BIST' },
-        { ticker: 'EREGL', name: 'Ereğli Demir Çelik', sector: 'Metal', price: 52.3, market: 'BIST' },
-        { ticker: 'GARAN', name: 'Garanti Bankası', sector: 'Bankacılık', price: 128.7, market: 'BIST' },
-        { ticker: 'AKBNK', name: 'Akbank', sector: 'Bankacılık', price: 65.4, market: 'BIST' },
-        { ticker: 'SAHOL', name: 'Sabancı Holding', sector: 'Holding', price: 92.1, market: 'BIST' }
+        { ticker: 'THYAO', name: 'Turkish Airlines', sector: 'Aviation', price: 312.5, market: 'BIST' },
+        { ticker: 'ASELS', name: 'Aselsan', sector: 'Defense', price: 57.8, market: 'BIST' },
+        { ticker: 'SISE', name: 'Sise Cam', sector: 'Glass', price: 48.2, market: 'BIST' },
+        { ticker: 'KCHOL', name: 'Koc Holding', sector: 'Holding', price: 198.4, market: 'BIST' },
+        { ticker: 'BIMAS', name: 'BIM', sector: 'Retail', price: 680.0, market: 'BIST' },
+        { ticker: 'TUPRS', name: 'Tupras', sector: 'Energy', price: 175.6, market: 'BIST' },
+        { ticker: 'EREGL', name: 'Eregli Steel', sector: 'Metal', price: 52.3, market: 'BIST' },
+        { ticker: 'GARAN', name: 'Garanti Bank', sector: 'Banking', price: 128.7, market: 'BIST' },
+        { ticker: 'AKBNK', name: 'Akbank', sector: 'Banking', price: 65.4, market: 'BIST' },
+        { ticker: 'SAHOL', name: 'Sabanci Holding', sector: 'Holding', price: 92.1, market: 'BIST' }
     ];
 
     const global_stocks = [
@@ -84,9 +84,9 @@ function findStockSignals(stocks) {
                 ...stock,
                 signal_type: 'oversold',
                 signal_label: 'Oversold (RSI < 30)',
-                description: `${stock.name} RSI ${stock.rsi} ile aşırı satım bölgesinde. Dip fırsatı olabilir.`,
-                suggestion: 'Kademeli alım düşünülebilir. Stop-loss belirleyin.',
-                urgency: 'bu hafta',
+                description: `${stock.name} is in oversold region with RSI ${stock.rsi}. Might be a bottom opportunity.`,
+                suggestion: 'Consider gradual buying. Set stop-loss.',
+                urgency: 'this week',
                 confidence: Math.floor(Math.random() * 20 + 60)
             });
         }
@@ -96,9 +96,9 @@ function findStockSignals(stocks) {
                 ...stock,
                 signal_type: 'overbought',
                 signal_label: 'Overbought (RSI > 70)',
-                description: `${stock.name} RSI ${stock.rsi} ile aşırı alım bölgesinde. Kar realizasyonu düşünülebilir.`,
-                suggestion: 'Pozisyon varsa kademeli satış düşünülebilir.',
-                urgency: 'bugün',
+                description: `${stock.name} is in overbought region with RSI ${stock.rsi}. Consider profit realization.`,
+                suggestion: 'Consider gradual selling if holding.',
+                urgency: 'today',
                 confidence: Math.floor(Math.random() * 20 + 55)
             });
         }
@@ -108,9 +108,9 @@ function findStockSignals(stocks) {
                 ...stock,
                 signal_type: 'breakout',
                 signal_label: 'Breakout',
-                description: `${stock.name} %${stock.change_percent.toFixed(1)} artışla yüksek hacimde kırılım yapıyor.`,
-                suggestion: 'Momentum trade için uygun olabilir. Hedef fiyat belirleyin.',
-                urgency: 'hemen',
+                description: `${stock.name} is breaking out with high volume and a %${stock.change_percent.toFixed(1)} increase.`,
+                suggestion: 'Suitable for momentum trade. Set target price.',
+                urgency: 'immediate',
                 confidence: Math.floor(Math.random() * 20 + 65)
             });
         }
@@ -120,9 +120,9 @@ function findStockSignals(stocks) {
                 ...stock,
                 signal_type: 'volume_spike',
                 signal_label: 'Volume Spike',
-                description: `${stock.name} hacmi %${stock.volume_change.toFixed(0)} arttı. Büyük bir hareket gelebilir.`,
-                suggestion: 'Haberleri takip edin. Pozisyon almadan önce analiz yapın.',
-                urgency: 'bugün',
+                description: `${stock.name} volume increased by %${stock.volume_change.toFixed(0)}. A big move may be coming.`,
+                suggestion: 'Follow the news. Analyze before taking a position.',
+                urgency: 'today',
                 confidence: Math.floor(Math.random() * 20 + 50)
             });
         }

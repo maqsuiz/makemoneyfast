@@ -38,10 +38,9 @@ async function scanCrypto() {
 
     return {
       module: 'crypto',
-      title: '₿ Kripto Fırsat Tarayıcı',
-      icon: '₿',
+      title: 'Crypto Opportunity Scanner',
       last_updated: new Date().toISOString(),
-      data_source: 'CoinGecko (Gerçek Veri)',
+      data_source: 'CoinGecko (Live Data)',
       market_overview: {
         total_market_cap: coins.reduce((sum, c) => sum + (c.market_cap || 0), 0),
         top_gainer: coins.reduce((best, c) => (c.price_change_percentage_24h > (best.price_change_percentage_24h || -999)) ? c : best, coins[0]),
@@ -68,9 +67,9 @@ function getSignalType(coin) {
 
 function getRiskLevel(coin) {
   const mc = coin.market_cap || 0;
-  if (mc > 50000000000) return 'düşük';
-  if (mc > 5000000000) return 'orta';
-  return 'yüksek';
+  if (mc > 50000000000) return 'low';
+  if (mc > 5000000000) return 'medium';
+  return 'high';
 }
 
 function generateArbitrageOpportunities(coins) {
@@ -103,18 +102,17 @@ function generateArbitrageOpportunities(coins) {
 function getDemoData() {
   return {
     module: 'crypto',
-    icon: '₿',
     last_updated: new Date().toISOString(),
-    data_source: 'Demo Veri',
+    data_source: 'Demo Data',
     market_overview: {
       total_market_cap: 2450000000000,
       top_gainer: { name: 'Solana', symbol: 'SOL', price_change_percentage_24h: 12.5 },
       top_loser: { name: 'Dogecoin', symbol: 'DOGE', price_change_percentage_24h: -8.3 }
     },
     opportunities: [
-      { coin_name: 'Bitcoin', symbol: 'BTC', current_price: 67500, price_change_24h: -3.2, signal_type: 'dip', risk_level: 'düşük', image: '', action_link: 'https://www.coingecko.com/en/coins/bitcoin' },
-      { coin_name: 'Ethereum', symbol: 'ETH', current_price: 3450, price_change_24h: 5.8, signal_type: 'rising', risk_level: 'düşük', image: '', action_link: 'https://www.coingecko.com/en/coins/ethereum' },
-      { coin_name: 'Solana', symbol: 'SOL', current_price: 145, price_change_24h: 12.5, signal_type: 'pump', risk_level: 'orta', image: '', action_link: 'https://www.coingecko.com/en/coins/solana' }
+      { coin_name: 'Bitcoin', symbol: 'BTC', current_price: 67500, price_change_24h: -3.2, signal_type: 'dip', risk_level: 'low', image: '', action_link: 'https://www.coingecko.com/en/coins/bitcoin' },
+      { coin_name: 'Ethereum', symbol: 'ETH', current_price: 3450, price_change_24h: 5.8, signal_type: 'rising', risk_level: 'low', image: '', action_link: 'https://www.coingecko.com/en/coins/ethereum' },
+      { coin_name: 'Solana', symbol: 'SOL', current_price: 145, price_change_24h: 12.5, signal_type: 'pump', risk_level: 'medium', image: '', action_link: 'https://www.coingecko.com/en/coins/solana' }
     ],
     arbitrage: [
       { coin: 'BTC', coin_name: 'Bitcoin', buy_exchange: 'Binance', sell_exchange: 'BtcTurk', buy_price: '67500.00', sell_price: '68850.00', spread_percent: '2.0', potential_profit_per_1000: '20.00' }
