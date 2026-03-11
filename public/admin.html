@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | Smart Financial Scanner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css?v=2.0">
+    <style>
+        .admin-grid {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 24px;
+            padding: 24px 32px;
+        }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 6px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 14px;
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: var(--transition);
+        }
+        .btn-submit:hover { opacity: 0.9; }
+        .admin-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .admin-table th { text-align: left; padding: 12px; font-size: 11px; color: var(--text-muted); border-bottom: 1px solid var(--border); text-transform: uppercase; }
+        .admin-table td { padding: 12px; font-size: 13px; border-bottom: 1px solid var(--border); color: var(--text-secondary); }
+        .btn-delete { color: var(--red); background: var(--red-bg); border: 1px solid rgba(231,76,60,0.2); padding: 4px 8px; border-radius: 4px; font-size: 11px; cursor: pointer; }
+        .stats-cards { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 24px; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-left">
+            <div class="logo">
+                <span class="logo-text">ADMIN PANEL</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <a href="/" class="card-link" style="margin: 0">Back to Dashboard</a>
+        </div>
+    </header>
+
+    <main class="content">
+        <div class="admin-grid">
+            <!-- Sidebar: Add New -->
+            <aside>
+                <div class="card">
+                    <h3 style="margin-bottom: 20px;">Add Opportunity</h3>
+                    <form id="addOppForm">
+                        <div class="form-group">
+                            <label>Title</label>
+                            <input type="text" name="title" required placeholder="e.g. BTC Bullish Pattern">
+                        </div>
+                        <div class="form-group">
+                            <label>Module</label>
+                            <select name="module">
+                                <option value="crypto">Crypto</option>
+                                <option value="stock">Stock</option>
+                                <option value="ai">AI</option>
+                                <option value="freelance">Freelance</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea name="description" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Confidence (%)</label>
+                            <input type="number" name="confidence" min="0" max="100" value="90">
+                        </div>
+                        <div class="form-group">
+                            <label>Potential Profit ($)</label>
+                            <input type="number" name="potential_profit" value="1000">
+                        </div>
+                        <button type="submit" class="btn-submit">Save Opportunity</button>
+                    </form>
+                </div>
+            </aside>
+
+            <!-- Main: List -->
+            <section>
+                <div class="stats-cards" id="adminStats">
+                    <div class="card" style="padding: 15px;"><div class="summary-label">TOTAL</div><div class="summary-value" id="stat-total">0</div></div>
+                    <div class="card" style="padding: 15px;"><div class="summary-label">CRYPTO</div><div class="summary-value" id="stat-crypto">0</div></div>
+                    <div class="card" style="padding: 15px;"><div class="summary-label">STOCKS</div><div class="summary-value" id="stat-stocks">0</div></div>
+                    <div class="card" style="padding: 15px;"><div class="summary-label">AI</div><div class="summary-value" id="stat-ai">0</div></div>
+                    <div class="card" style="padding: 15px;"><div class="summary-label">JOBS</div><div class="summary-value" id="stat-freelance">0</div></div>
+                </div>
+
+                <div class="card" style="padding: 0;">
+                    <div style="padding: 20px; border-bottom: 1px solid var(--border);">
+                        <h3 style="font-size: 16px;">Saved Opportunities</h3>
+                    </div>
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Module</th>
+                                <th>Title</th>
+                                <th>Confidence</th>
+                                <th>Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="oppTableBody">
+                            <!-- Data injected here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="/js/admin.js"></script>
+</body>
+</html>

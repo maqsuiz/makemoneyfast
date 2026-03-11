@@ -87,6 +87,17 @@ function generateReport(allData) {
         });
     }
 
+    // Saved Opportunities from DB
+    if (allData.saved_opps) {
+        allData.saved_opps.forEach(o => {
+            opportunities.push({
+                ...o,
+                title: `[SAVED] ${o.title}`,
+                confidence: o.confidence || 90
+            });
+        });
+    }
+
     opportunities.sort((a, b) => b.confidence - a.confidence);
 
     return {

@@ -7,7 +7,7 @@ const { scanAITools } = require('./services/aiToolsScanner');
 const { scanFreelance } = require('./services/freelanceScanner');
 const { scanTrends } = require('./services/trendScanner');
 const { generateReport } = require('./utils/reportGenerator');
-const { initDb, saveOpportunity } = require('./lib/db');
+const { initDb, saveOpportunity, getRecentOpportunities, deleteOpportunity, getStats } = require('./lib/db');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -46,12 +46,13 @@ app.get('/api/trends', async (req, res) => {
 
 app.get('/api/report', async (req, res) => {
     try {
-        const [crypto, stocks, ai_tools, freelance, trends] = await Promise.all([
+        const [crypto, stocks, ai_tools, freelance, trends, saved_opps] = await Promise.all([
             scanCrypto(),
             scanStocks(),
             scanAITools(),
             scanFreelance(),
-            scanTrends()
+            scanTrends(),
+            getRecentOpportunities(20)
         ]);
 
         const report = generateReport({
@@ -59,7 +60,8 @@ app.get('/api/report', async (req, res) => {
             stocks,
             ai_tools,
             freelance,
-            trends
+            trends,
+            saved_opps // Pass saved opportunities to generator
         });
 
         // Background persistence for high confidence results
@@ -77,6 +79,35 @@ app.get('/api/report', async (req, res) => {
 
 app.post('/api/refresh', (req, res) => {
     res.json({ success: true });
+});
+
+// Admin API
+app.get('/api/admin/stats', async (req, res) => {
+    try { res.json(await getStats()); }
+    catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+app.get('/api/admin/opportunities', async (req, res) => {
+    try { res.json(await getRecentOpportunities(100)); }
+    catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+app.post('/api/admin/opportunities', async (req, res) => {
+    try {
+        const id = await saveOpportunity(req.body);
+        res.json({ success: true, id });
+    } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+app.delete('/api/admin/opportunities/:id', async (req, res) => {
+    try {
+        await deleteOpportunity(req.params.id);
+        res.json({ success: true });
+    } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+app.get('/admin', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
 app.get('/', (req, res) => {
