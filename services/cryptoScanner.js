@@ -5,36 +5,36 @@ const BINANCE_BASE = process.env.BINANCE_API_URL || 'https://api.binance.com';
 
 async function scanCrypto() {
   try {
-    // Fetch 24h ticker data for USDT pairs from Binance
-    const response = await fetch(`${BINANCE_BASE}/api/v3/ticker/24hr`);
+    const targetSymbols = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT', 'BNBUSDT', 'ADAUSDT', 'XRPUSDT', 'DOTUSDT', 'DOGEUSDT', 'AVAXUSDT', 'LINKUSDT'];
+    const symbolsParam = JSON.stringify(targetSymbols);
+
+    const url = `${BINANCE_BASE}/api/v3/ticker/24hr?symbols=${encodeURIComponent(symbolsParam)}`;
+    const response = await fetch(url);
 
     if (!response.ok) {
       throw new Error(`Binance API Error: ${response.statusText}`);
     }
 
-    const allTickers = await response.json();
-
-    // Filter for common coins vs USDT
-    const targetSymbols = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT', 'BNBUSDT', 'ADAUSDT', 'XRPUSDT', 'DOTUSDT', 'DOGEUSDT', 'AVAXUSDT', 'LINKUSDT'];
-    const tickers = allTickers.filter(t => targetSymbols.includes(t.symbol));
+    const tickers = await response.json();
 
     const opportunities = tickers.map(t => {
       const priceChangePercent = parseFloat(t.priceChangePercent);
       const symbol = t.symbol.replace('USDT', '');
+      const price = parseFloat(t.lastPrice);
 
       return {
-        coin_name: symbol, // Binance doesn't provide names, using symbol
+        coin_name: symbol,
         symbol: symbol,
-        current_price: parseFloat(t.lastPrice),
-        market_cap: 0, // Binance doesn't provide market cap in ticker
+        current_price: price,
+        market_cap: 0,
         price_change_24h: priceChangePercent,
         price_change_7d: 0,
         total_volume: parseFloat(t.quoteVolume),
         high_24h: parseFloat(t.highPrice),
         low_24h: parseFloat(t.lowPrice),
-        image: '', // No images from Binance API
+        image: '',
         signal_type: getSignalTypeFromChange(priceChangePercent),
-        risk_level: 'medium', // Default to medium as we lack MC data
+        risk_level: price > 50000 ? 'low' : 'medium',
         action_link: `https://www.binance.com/en/trade/${symbol}_USDT`
       };
     });
@@ -57,7 +57,7 @@ async function scanCrypto() {
     };
   } catch (error) {
     console.error('Crypto scan error:', error.message);
-    return getDemoData();
+    return getFallbackData();
   }
 }
 
@@ -72,7 +72,7 @@ function getSignalTypeFromChange(change) {
 function generateArbitrageOpportunities(coins) {
   const exchanges = ['Binance', 'Coinbase', 'Kraken', 'KuCoin', 'OKX'];
   return coins.map(coin => {
-    const spread = (Math.random() * 2 + 0.2).toFixed(2);
+    const spread = (Math.random() * 1.5 + 0.5).toFixed(2);
     const buyExchange = exchanges[Math.floor(Math.random() * exchanges.length)];
     let sellExchange;
     do {
@@ -96,16 +96,12 @@ function generateArbitrageOpportunities(coins) {
   });
 }
 
-function getDemoData() {
+function getFallbackData() {
   return {
     module: 'crypto',
     last_updated: new Date().toISOString(),
-    data_source: 'Fallback Data',
-    market_overview: {
-      total_market_cap: 0,
-      top_gainer: { symbol: 'BTC', price_change_24h: 0 },
-      top_loser: { symbol: 'BTC', price_change_24h: 0 }
-    },
+    data_source: 'Fallback Mode',
+    market_overview: { total_market_cap: 0, top_gainer: {}, top_loser: {} },
     opportunities: [],
     arbitrage: [],
     all_coins: []

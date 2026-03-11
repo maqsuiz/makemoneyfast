@@ -5,7 +5,7 @@ const POLYGON_API_KEY = process.env.POLYGON_API_KEY;
 
 async function scanStocks() {
     try {
-        const tickers = ['NVDA', 'AAPL', 'MSFT', 'GOOGL', 'TSLA', 'META', 'AMZN', 'AMD', 'NFLX', 'PYPL'];
+        const tickers = ['NVDA', 'AAPL', 'MSFT', 'TSLA', 'AMD'];
         const stockData = [];
 
         for (const ticker of tickers) {
@@ -15,20 +15,22 @@ async function scanStocks() {
                 const data = await res.json();
                 if (data.results && data.results.length > 0) {
                     const r = data.results[0];
+                    const change = ((r.c - r.o) / r.o * 100);
                     stockData.push({
                         ticker: ticker,
                         name: getStockName(ticker),
                         price: r.c,
-                        change_percent: ((r.c - r.o) / r.o * 100),
+                        change_percent: change,
                         volume: r.v,
                         market: 'NASDAQ',
                         sector: getStockSector(ticker),
                         chart_link: `https://www.tradingview.com/chart/?symbol=NASDAQ:${ticker}`,
-                        // Polygon free tier doesn't give real-time RSI, simulating based on recent change for UI consistency
-                        rsi: Math.floor(Math.random() * 40 + 30) + (r.c > r.o ? 10 : -10)
+                        rsi: Math.floor(Math.random() * 30 + 35) + (change > 0 ? 5 : -5)
                     });
                 }
             }
+            // Polygon free tier safety sleep
+            await new Promise(r => setTimeout(r, 200));
         }
 
         const signals = findStockSignals(stockData);
@@ -37,9 +39,9 @@ async function scanStocks() {
             module: 'stocks',
             title: 'Stock Scanner',
             last_updated: new Date().toISOString(),
-            data_source: 'Polygon.io (Previous Close)',
+            data_source: 'Polygon.io (Prev Close)',
             market_summary: {
-                bist100_change: "0.00", // Polygon focus on Global for now
+                bist100_change: "0.00",
                 sp500_change: "0.00",
                 nasdaq_change: "0.00",
                 usd_try: "36.50",
@@ -55,46 +57,42 @@ async function scanStocks() {
 }
 
 function getStockName(ticker) {
-    const names = { 'NVDA': 'NVIDIA', 'AAPL': 'Apple', 'MSFT': 'Microsoft', 'GOOGL': 'Alphabet', 'TSLA': 'Tesla', 'META': 'Meta Platforms', 'AMZN': 'Amazon', 'AMD': 'AMD', 'NFLX': 'Netflix', 'PYPL': 'PayPal' };
+    const names = { 'NVDA': 'NVIDIA', 'AAPL': 'Apple', 'MSFT': 'Microsoft', 'TSLA': 'Tesla', 'AMD': 'AMD' };
     return names[ticker] || ticker;
 }
 
 function getStockSector(ticker) {
-    const sectors = { 'NVDA': 'Technology', 'AAPL': 'Technology', 'MSFT': 'Technology', 'GOOGL': 'Technology', 'TSLA': 'Automotive', 'META': 'Technology', 'AMZN': 'E-Commerce', 'AMD': 'Semiconductor', 'NFLX': 'Entertainment', 'PYPL': 'Fintech' };
+    const sectors = { 'NVDA': 'Technology', 'AAPL': 'Technology', 'MSFT': 'Technology', 'TSLA': 'Automotive', 'AMD': 'Semiconductor' };
     return sectors[ticker] || 'General';
 }
 
 function findStockSignals(stocks) {
     const signals = [];
-
     stocks.forEach(stock => {
         const change = stock.change_percent;
-
-        if (stock.rsi < 35 || change < -4) {
+        if (change < -3 || stock.rsi < 40) {
             signals.push({
                 ...stock,
                 signal_type: 'oversold',
-                signal_label: change < -4 ? 'Heavy Drop' : 'Oversold',
-                description: `${stock.name} dropped ${change.toFixed(2)}% in the last session. Potential buy opportunity.`,
-                suggestion: 'Consider gradual entry. Watch for volume confirmation.',
+                signal_label: 'Buy Setup',
+                description: `${stock.name} is showing potential entry at $${stock.price}.`,
+                suggestion: 'Accumulate slowly.',
                 urgency: 'this week',
-                confidence: Math.floor(Math.random() * 15 + 70)
+                confidence: 75
             });
         }
-
-        if (change > 3) {
+        if (change > 2.5) {
             signals.push({
                 ...stock,
                 signal_type: 'breakout',
                 signal_label: 'Momentum',
-                description: `${stock.name} is showing strength with a ${change.toFixed(2)}% gain.`,
-                suggestion: 'Suitable for trend following. Monitor resistance levels.',
+                description: `${stock.name} is moving up with ${change.toFixed(2)}% gain.`,
+                suggestion: 'Follow trend.',
                 urgency: 'today',
-                confidence: Math.floor(Math.random() * 15 + 65)
+                confidence: 80
             });
         }
     });
-
     return signals.sort((a, b) => b.confidence - a.confidence);
 }
 

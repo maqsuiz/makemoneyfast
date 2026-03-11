@@ -3,7 +3,7 @@
 const API = {
   report: '/api/report',
   crypto: '/api/crypto',
-  ecommerce: '/api/ecommerce',
+
   stocks: '/api/stocks',
   'ai-tools': '/api/ai-tools',
   freelance: '/api/freelance',
@@ -74,7 +74,7 @@ function updateSummaryBar(report) {
 
   // Count by type
   const opps = report.opportunities || [];
-  document.getElementById('ecomOpps').textContent = opps.filter(o => o.type === 'arbitrage').length;
+
   document.getElementById('cryptoOpps').textContent = opps.filter(o => o.type === 'crypto').length;
   document.getElementById('stockOpps').textContent = opps.filter(o => o.type === 'stock').length;
   document.getElementById('freelanceOpps').textContent = opps.filter(o => o.type === 'freelance').length;
@@ -87,7 +87,7 @@ function renderTab(tab, data) {
   const container = document.getElementById('tabContent');
   const renderers = {
     'report': renderReport,
-    'ecommerce': renderEcommerce,
+
     'crypto': renderCrypto,
     'stocks': renderStocks,
     'ai-tools': renderAITools,
@@ -128,42 +128,7 @@ function renderReport(data) {
     </div>`;
 }
 
-function renderEcommerce(data) {
-  const opps = data.opportunities || [];
-  return `
-    <div class="section-header">
-      <div>
-        <div class="section-title">E-COMMERCE ARBITRAGE</div>
-        <div class="section-subtitle">${data.data_source} • ${opps.length} opportunities found</div>
-      </div>
-    </div>
-    <div class="card-grid">
-      ${opps.map((o, i) => `
-        <div class="card" style="animation-delay:${i * 0.06}s">
-          <div class="card-header">
-            <span class="card-title">${o.product_name}</span>
-            <span class="card-badge badge-green">${o.price_difference_percent}% diff</span>
-          </div>
-          <div class="card-body">
-            ${Object.entries(o.all_prices).map(([plat, price]) => `
-              <div class="price-row">
-                <span class="platform">${plat}</span>
-                <span class="price ${price === o.cheapest_price ? 'cheapest' : price === o.expensive_price ? 'expensive' : ''}">$${price.toLocaleString('en-US')}</span>
-              </div>
-            `).join('')}
-            <div class="profit-highlight">
-              <span class="label">Estimated Profit:</span>
-              <span class="value">$${o.estimated_profit_tl.toLocaleString('en-US')}</span>
-            </div>
-          </div>
-          <div class="card-footer">
-            <span class="meta-tag">${o.category}</span>
-            <a class="card-link" href="${o.links.amazon || '#'}" target="_blank">See Cheapest</a>
-          </div>
-        </div>
-      `).join('')}
-    </div>`;
-}
+
 
 function renderCrypto(data) {
   const coins = data.all_coins && data.all_coins.length ? data.all_coins : data.opportunities || [];
