@@ -117,10 +117,10 @@ function renderReport(data) {
             <div class="opp-desc">${o.description}</div>
             <div class="opp-meta">
               <span class="meta-tag">${o.module}</span>
-              <span class="meta-tag">${o.potential_profit}</span>
-              <span class="meta-tag ${o.risk_level === 'düşük' ? 'badge-green' : o.risk_level === 'yüksek' ? 'badge-red' : 'badge-yellow'}"">Risk: ${o.risk_level}</span>
+              <span class="meta-tag">${typeof o.potential_profit === 'number' ? `$${o.potential_profit.toLocaleString('en-US')}` : o.potential_profit}</span>
+              <span class="meta-tag ${formatRiskLevel(o.risk_level) === 'low' ? 'badge-green' : formatRiskLevel(o.risk_level) === 'high' ? 'badge-red' : 'badge-yellow'}">Risk: ${formatRiskLevel(o.risk_level)}</span>
               <span class="meta-tag">TIME: ${o.urgency}</span>
-              <span class="meta-tag">CONF: %${o.confidence}</span>
+              <span class="meta-tag">CONF: ${o.confidence}%</span>
             </div>
           </div>
         </div>
@@ -142,7 +142,7 @@ function renderEcommerce(data) {
         <div class="card" style="animation-delay:${i * 0.06}s">
           <div class="card-header">
             <span class="card-title">${o.product_name}</span>
-            <span class="card-badge badge-green">%${o.price_difference_percent} diff</span>
+            <span class="card-badge badge-green">${o.price_difference_percent}% diff</span>
           </div>
           <div class="card-body">
             ${Object.entries(o.all_prices).map(([plat, price]) => `
@@ -183,7 +183,7 @@ function renderCrypto(data) {
           <div class="card" style="animation-delay:${i * 0.06}s">
             <div class="card-header">
               <span class="card-title">${a.coin_name} (${a.coin})</span>
-              <span class="card-badge badge-green">%${a.spread_percent} spread</span>
+              <span class="card-badge badge-green">${a.spread_percent}% spread</span>
             </div>
             <div class="card-body">
               <div class="price-row"><span class="platform">BUY: ${a.buy_exchange}</span><span class="price cheapest">$${a.buy_price}</span></div>
@@ -232,8 +232,8 @@ function renderStocks(data) {
       <div class="summary-card"><div><span class="summary-value ${ms.bist100_change >= 0 ? 'change-positive' : 'change-negative'}">${ms.bist100_change >= 0 ? '+' : ''}${ms.bist100_change}%</span><span class="summary-label">BIST 100</span></div></div>
       <div class="summary-card"><div><span class="summary-value ${ms.sp500_change >= 0 ? 'change-positive' : 'change-negative'}">${ms.sp500_change >= 0 ? '+' : ''}${ms.sp500_change}%</span><span class="summary-label">S&P 500</span></div></div>
       <div class="summary-card"><div><span class="summary-value ${ms.nasdaq_change >= 0 ? 'change-positive' : 'change-negative'}">${ms.nasdaq_change >= 0 ? '+' : ''}${ms.nasdaq_change}%</span><span class="summary-label">NASDAQ</span></div></div>
-      <div class="summary-card"><div><span class="summary-value">${ms.usd_try}₺</span><span class="summary-label">USD/TRY</span></div></div>
-      <div class="summary-card"><div><span class="summary-value">${ms.eur_try}₺</span><span class="summary-label">EUR/TRY</span></div></div>
+      <div class="summary-card"><div><span class="summary-value">${ms.usd_try}$</span><span class="summary-label">USD/TRY</span></div></div>
+      <div class="summary-card"><div><span class="summary-value">${ms.eur_try}$</span><span class="summary-label">EUR/TRY</span></div></div>
     </div>
     ${signals.length ? `
     <h3 style="font-size:15px;font-weight:700;margin-bottom:12px">ACTIVE SIGNALS</h3>
@@ -248,9 +248,9 @@ function renderStocks(data) {
             <p>${s.description}</p>
             <p style="color:var(--accent-3);margin-top:8px">INFO: ${s.suggestion}</p>
             <div class="card-meta">
-              <span class="meta-tag">PRICE: ${s.price.toLocaleString('en-US')} ${s.market === 'BIST' ? '₺' : '$'}</span>
+              <span class="meta-tag">PRICE: ${s.price.toLocaleString('en-US')} ${s.market === 'BIST' ? '$' : '$'}</span>
               <span class="meta-tag">RSI: ${s.rsi}</span>
-              <span class="meta-tag">CONF: %${s.confidence}</span>
+              <span class="meta-tag">CONF: ${s.confidence}%</span>
               <span class="meta-tag">TIME: ${s.urgency}</span>
             </div>
           </div>
@@ -314,7 +314,7 @@ function renderFreelance(data) {
       <div class="summary-card"><div><span class="summary-value">${s.total_jobs || 0}</span><span class="summary-label">Total Jobs</span></div></div>
       <div class="summary-card"><div><span class="summary-value">${s.high_budget || 0}</span><span class="summary-label">$500+ Budget</span></div></div>
       <div class="summary-card"><div><span class="summary-value">${s.low_competition || 0}</span><span class="summary-label">Low Competition</span></div></div>
-      <div class="summary-card"><div><span class="summary-value">$${(s.total_potential || 0).toLocaleString()}</span><span class="summary-label">Total Potential</span></div></div>
+      <div class="summary-card"><div><span class="summary-value">$${(s.total_potential || 0).toLocaleString('en-US')}</span><span class="summary-label">Total Potential</span></div></div>
     </div>
     <div class="card-grid">
       ${jobs.map((j, i) => `
@@ -327,7 +327,7 @@ function renderFreelance(data) {
             <p>${j.desc}</p>
             <div class="card-meta" style="margin-top:10px">
               <span class="meta-tag">${j.platform}</span>
-              <span class="meta-tag">BUDGET: ${j.currency === 'TRY' ? '' : ' $'}${j.budget_min}-${j.budget_max}${j.currency === 'TRY' ? ' ₺' : ''}</span>
+              <span class="meta-tag">BUDGET: ${j.currency === 'TRY' ? '$' : ' $'}${j.budget_min}-${j.budget_max}${j.currency === 'TRY' ? '' : ''}</span>
               <span class="meta-tag">RATE: ${j.client_rating}</span>
               <span class="meta-tag">PROPOSALS: ${j.proposals}</span>
               <span class="meta-tag">TIME: ${j.hours_ago}h ago</span>

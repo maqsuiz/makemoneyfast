@@ -15,8 +15,8 @@ function generateReport(allData) {
             opportunities.push({
                 title: `${o.product_name} – %${o.price_difference_percent} price difference`,
                 type: 'arbitrage', module: 'E-Commerce',
-                description: `${o.cheapest_platform} at ${o.cheapest_price.toLocaleString('tr-TR')}₺, ${o.expensive_platform} at ${o.expensive_price.toLocaleString('tr-TR')}₺`,
-                potential_profit: `${o.estimated_profit_tl.toLocaleString('tr-TR')}₺`,
+                description: `${o.cheapest_platform} at $${o.cheapest_price.toLocaleString('en-US')}, ${o.expensive_platform} at $${o.expensive_price.toLocaleString('en-US')}`,
+                potential_profit: `$${o.estimated_profit_tl.toLocaleString('en-US')}`,
                 risk_level: 'low', urgency: 'today', confidence: 85,
                 links: o.links
             });
@@ -56,7 +56,7 @@ function generateReport(allData) {
         allData.stocks.signals.slice(0, 2).forEach(s => {
             opportunities.push({
                 title: `${s.ticker} – ${s.signal_label}`,
-                type: 'stock', module: 'Hisse',
+                type: 'stock', module: 'Stock',
                 description: s.description,
                 potential_profit: s.suggestion,
                 risk_level: s.rsi < 30 ? 'medium' : 'high', urgency: s.urgency, confidence: s.confidence,
