@@ -103,7 +103,6 @@ function generateArbitrageOpportunities(coins) {
 function getDemoData() {
   return {
     module: 'crypto',
-    title: '₿ Kripto Fırsat Tarayıcı',
     icon: '₿',
     last_updated: new Date().toISOString(),
     data_source: 'Demo Veri',

@@ -56,7 +56,7 @@ function generateReport(allData) {
         allData.stocks.signals.slice(0, 2).forEach(s => {
             opportunities.push({
                 title: `${s.ticker} – ${s.signal_label}`,
-                type: 'stock', module: '📈 Hisse',
+                type: 'stock', module: 'Hisse',
                 description: s.description,
                 potential_profit: s.suggestion,
                 risk_level: s.rsi < 30 ? 'orta' : 'yüksek', urgency: s.urgency, confidence: s.confidence,
@@ -69,8 +69,8 @@ function generateReport(allData) {
     if (allData.ai_tools && allData.ai_tools.tools) {
         allData.ai_tools.tools.filter(t => t.money_making_potential === 'Yüksek').slice(0, 2).forEach(t => {
             opportunities.push({
-                title: `Yeni AI Aracı: ${t.name} – ${t.category}`,
-                type: 'ai_tool', module: '🤖 AI',
+                title: `Yeni KOMBAI Aracı: ${t.name} – ${t.category}`,
+                type: 'ai_tool', module: 'KOMBAI',
                 description: t.description,
                 potential_profit: t.use_cases[0],
                 risk_level: 'düşük', urgency: 'bu hafta', confidence: 78,
@@ -84,7 +84,7 @@ function generateReport(allData) {
         allData.freelance.top_opportunities.slice(0, 2).forEach(j => {
             opportunities.push({
                 title: `${j.platform}: ${j.title}`,
-                type: 'freelance', module: '💼 Freelance',
+                type: 'freelance', module: 'Freelance',
                 description: `Bütçe: $${j.budget_min}-$${j.budget_max} | Rekabet: ${j.competition}`,
                 potential_profit: `$${j.budget_max}`,
                 risk_level: 'düşük', urgency: j.urgency, confidence: 82,
@@ -98,7 +98,7 @@ function generateReport(allData) {
         allData.trends.trends.filter(t => t.velocity.includes('Yüksel')).slice(0, 2).forEach(t => {
             opportunities.push({
                 title: `Trend: ${t.topic}`,
-                type: 'trend', module: '📊 Trend',
+                type: 'trend', module: 'Trend',
                 description: `${t.platform} | ${t.velocity} | Engagement: ${t.engagement.toLocaleString()}`,
                 potential_profit: t.money_angle,
                 risk_level: 'düşük', urgency: 'bu hafta', confidence: 70,
@@ -110,10 +110,10 @@ function generateReport(allData) {
     opportunities.sort((a, b) => b.confidence - a.confidence);
 
     return {
-        title: `📋 Günlük Fırsat Raporu – ${dateStr}`,
+        title: `Daily Report – ${dateStr}`,
         generated_at: now.toISOString(),
         total_opportunities: opportunities.length,
-        summary: `Bugün ${opportunities.length} fırsat bulundu.`,
+        summary: `Today ${opportunities.length} opportunities found.`,
         highlights: opportunities.slice(0, 3).map(o => `${o.module}: ${o.title}`),
         opportunities,
         modules_scanned: Object.keys(allData).length,

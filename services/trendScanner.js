@@ -1,24 +1,24 @@
 /**
- * Trend & Sosyal Medya Tarayıcı
- * X trendleri, Google Trends, Reddit verileri
+ * Trend & Social Media Scanner
+ * X trends, Google Trends, Reddit data
  */
 
 async function scanTrends() {
     const trends = [
-        { topic: 'AI Agent Ekonomisi', platform: 'X / Google Trends', engagement: 52000, sentiment: 'Pozitif', velocity: 'Hızla Yükseliyor', money_angle: 'AI agent servisi kurarak freelance gelir elde et', related: ['n8n otomasyon', 'LangChain', 'AutoGPT'], link: 'https://trends.google.com/trends/explore?q=ai+agent', category: 'teknoloji' },
-        { topic: 'Prompt Engineering İşleri', platform: 'Google Trends', engagement: 38000, sentiment: 'Pozitif', velocity: 'Yükseliyor', money_angle: 'Şirketlere prompt engineer olarak danışmanlık ver', related: ['ChatGPT prompts', 'AI consulting'], link: 'https://trends.google.com/trends/explore?q=prompt+engineering', category: 'kariyer' },
-        { topic: 'Bitcoin Halving Etkisi', platform: 'X / Reddit', engagement: 125000, sentiment: 'Boğa', velocity: 'Stabil Yüksek', money_angle: 'BTC spot/futures pozisyon, halving sonrası trend takibi', related: ['kripto yatırım', 'altcoin season'], link: 'https://twitter.com/search?q=bitcoin+halving', category: 'finans' },
-        { topic: 'No-Code SaaS Platformları', platform: 'Product Hunt / Reddit', engagement: 28000, sentiment: 'Pozitif', velocity: 'Yükseliyor', money_angle: 'No-code ile SaaS ürünü oluştur ve sat', related: ['Bubble.io', 'Webflow', 'micro-SaaS'], link: 'https://www.reddit.com/r/nocode', category: 'girişimcilik' },
-        { topic: 'YouTube Shorts Monetization', platform: 'Google Trends', engagement: 45000, sentiment: 'Pozitif', velocity: 'Yükseliyor', money_angle: 'AI ile Shorts üret, reklam geliri kazan', related: ['Sora AI', 'video editing', 'content creation'], link: 'https://trends.google.com/trends/explore?q=youtube+shorts+para', category: 'içerik' },
-        { topic: 'Freelance AI Otomasyon', platform: 'X / Upwork', engagement: 19000, sentiment: 'Çok Pozitif', velocity: 'Hızla Yükseliyor', money_angle: 'Şirketlere AI otomasyon kurulum hizmeti sun ($500-5000/proje)', related: ['Make.com', 'Zapier', 'n8n'], link: 'https://twitter.com/search?q=AI+automation+freelance', category: 'kariyer' },
-        { topic: 'Print on Demand + AI Art', platform: 'Reddit / Etsy', engagement: 32000, sentiment: 'Pozitif', velocity: 'Stabil', money_angle: 'Midjourney ile tasarım üret, Etsy/Redbubble\'da sat', related: ['Midjourney', 'Etsy shop', 'passive income'], link: 'https://www.reddit.com/r/passive_income', category: 'e-ticaret' },
-        { topic: 'Türk Lirası Değer Kaybı', platform: 'X / Ekşi Sözlük', engagement: 85000, sentiment: 'Negatif', velocity: 'Stabil', money_angle: 'Dolar bazlı freelance iş al, TL ile yaşa (arbitraj)', related: ['döviz', 'enflasyon', 'yan gelir'], link: 'https://eksisozluk.com/dolar--32218', category: 'finans' }
+        { topic: 'AI Agent Economy', platform: 'X / Google Trends', engagement: 52000, sentiment: 'Positive', velocity: 'Rapidly Rising', money_angle: 'Earn freelance income by setting up an AI agent service', related: ['n8n automation', 'LangChain', 'AutoGPT'], link: 'https://trends.google.com/trends/explore?q=ai+agent', category: 'technology' },
+        { topic: 'Prompt Engineering Jobs', platform: 'Google Trends', engagement: 38000, sentiment: 'Positive', velocity: 'Rising', money_angle: 'Consult companies as a prompt engineer', related: ['ChatGPT prompts', 'AI consulting'], link: 'https://trends.google.com/trends/explore?q=prompt+engineering', category: 'career' },
+        { topic: 'Bitcoin Halving Impact', platform: 'X / Reddit', engagement: 125000, sentiment: 'Bullish', velocity: 'Stable High', money_angle: 'BTC spot/futures position, post-halving trend tracking', related: ['crypto investment', 'altcoin season'], link: 'https://twitter.com/search?q=bitcoin+halving', category: 'finance' },
+        { topic: 'No-Code SaaS Platforms', platform: 'Product Hunt / Reddit', engagement: 28000, sentiment: 'Positive', velocity: 'Rising', money_angle: 'Create and sell SaaS products with no-code', related: ['Bubble.io', 'Webflow', 'micro-SaaS'], link: 'https://www.reddit.com/r/nocode', category: 'entrepreneurship' },
+        { topic: 'YouTube Shorts Monetization', platform: 'Google Trends', engagement: 45000, sentiment: 'Positive', velocity: 'Rising', money_angle: 'Generate Shorts with AI, earn ad revenue', related: ['Sora AI', 'video editing', 'content creation'], link: 'https://trends.google.com/trends/explore?q=youtube+shorts+para', category: 'content' },
+        { topic: 'Freelance AI Automation', platform: 'X / Upwork', engagement: 19000, sentiment: 'Very Positive', velocity: 'Rapidly Rising', money_angle: 'Offer AI automation setup services to companies ($500-5000/project)', related: ['Make.com', 'Zapier', 'n8n'], link: 'https://twitter.com/search?q=AI+automation+freelance', category: 'career' },
+        { topic: 'Print on Demand + AI Art', platform: 'Reddit / Etsy', engagement: 32000, sentiment: 'Positive', velocity: 'Stable', money_angle: 'Generate designs with Midjourney, sell on Etsy/Redbubble', related: ['Midjourney', 'Etsy shop', 'passive income'], link: 'https://www.reddit.com/r/passive_income', category: 'e-commerce' },
+        { topic: 'Turkish Lira Depreciation', platform: 'X / Ekşi Sözlük', engagement: 85000, sentiment: 'Negative', velocity: 'Stable', money_angle: 'Get dollar-based freelance jobs, live with TL (arbitrage)', related: ['foreign exchange', 'inflation', 'side income'], link: 'https://eksisozluk.com/dolar--32218', category: 'finance' }
     ];
 
     return {
-        module: 'trends', title: '📊 Trend & Sosyal Medya', icon: '📊',
-        last_updated: new Date().toISOString(), data_source: 'Trend Analiz Verileri',
-        summary: { total_trends: trends.length, rising: trends.filter(t => t.velocity.includes('Yüksel')).length, money_angles: trends.length },
+        module: 'trends', title: 'Trend & Social Scanner',
+        last_updated: new Date().toISOString(), data_source: 'Trend Analysis Data',
+        summary: { total_trends: trends.length, rising: trends.filter(t => t.velocity.includes('Rising')).length, money_angles: trends.length },
         trends
     };
 }

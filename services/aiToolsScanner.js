@@ -9,8 +9,7 @@ async function scanAITools() {
 
         return {
             module: 'ai_tools',
-            title: '🤖 Yeni AI Araçları',
-            icon: '🤖',
+            title: 'KOMBAI Tools Scanner',
             last_updated: new Date().toISOString(),
             data_source: 'Küratörlü AI Araç Veritabanı',
             summary: {
@@ -23,42 +22,35 @@ async function scanAITools() {
     } catch (error) {
         console.error('AI araç tarama hatası:', error.message);
         return { module: 'ai_tools', title: '🤖 Yeni AI Araçları', icon: '🤖', tools: [], error: error.message };
+        return { module: 'kombai_tools', title: 'Yeni KOMBAI Araçları', tools: [], error: error.message };
     }
 }
 
 function getAITools() {
     return [
         {
-            name: 'Devin AI',
-            category: 'Kod Asistanı',
-            description: 'Dünyanın ilk tamamen otonom AI yazılım mühendisi. Komple projeler geliştirebilir, debug edebilir ve deploy edebilir.',
-            pricing: 'Ücretli ($500/ay)',
-            upvotes: 2840,
-            money_making_potential: 'Yüksek',
-            use_cases: [
-                'Freelance yazılım projelerini otomatize et',
-                'Müşteri projelerini 10x hızlı teslim et',
-                'Boilerplate kodları otomatik oluştur'
-            ],
-            link: 'https://devin.ai',
-            launch_date: '2024-03',
-            trend: 'rising'
+            name: 'Devin',
+            description: 'World first fully autonomous software engineer. Can build entire projects.',
+            category: 'Engineering',
+            pricing: 'Private Beta',
+            upvotes: 24500,
+            money_making_potential: 'High',
+            use_cases: ['Automate freelance coding projects', 'Rapid prototyping for clients'],
+            trend: 'hot',
+            launch_date: '2024-03-12',
+            link: 'https://www.cognition-labs.com/introducing-devin'
         },
         {
-            name: 'Sora by OpenAI',
-            category: 'Video Üretimi',
-            description: 'Metin açıklamasından fotorealistik videolar üretir. 1 dakikaya kadar tutarlı, yüksek kaliteli videolar oluşturur.',
-            pricing: 'ChatGPT Plus ($20/ay)',
-            upvotes: 5200,
-            money_making_potential: 'Yüksek',
-            use_cases: [
-                'YouTube Shorts / TikTok içerik üretimi',
-                'Markalara video reklam hizmeti sat',
-                'Stock video satışı (Shutterstock, Adobe Stock)'
-            ],
-            link: 'https://openai.com/sora',
-            launch_date: '2024-12',
-            trend: 'hot'
+            name: 'Sora',
+            description: 'Text-to-video model. Creates realistic and imaginative video scenes.',
+            category: 'Video Generation',
+            pricing: 'Coming Soon',
+            upvotes: 18200,
+            money_making_potential: 'High',
+            use_cases: ['YouTube Shorts / TikTok content production', 'Advertising agency quality videos'],
+            trend: 'hot',
+            launch_date: '2024-02-15',
+            link: 'https://openai.com/sora'
         },
         {
             name: 'Bolt.new',

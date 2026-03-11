@@ -10,8 +10,7 @@ async function scanStocks() {
 
         return {
             module: 'stocks',
-            title: '📈 Hisse Senedi Tarayıcı',
-            icon: '📈',
+            title: 'Stock Scanner',
             last_updated: new Date().toISOString(),
             data_source: 'Simüle Edilen Piyasa Verisi',
             market_summary: {
@@ -84,7 +83,7 @@ function findStockSignals(stocks) {
             signals.push({
                 ...stock,
                 signal_type: 'oversold',
-                signal_label: '📉 Aşırı Satım (RSI < 30)',
+                signal_label: 'Oversold (RSI < 30)',
                 description: `${stock.name} RSI ${stock.rsi} ile aşırı satım bölgesinde. Dip fırsatı olabilir.`,
                 suggestion: 'Kademeli alım düşünülebilir. Stop-loss belirleyin.',
                 urgency: 'bu hafta',
@@ -96,7 +95,7 @@ function findStockSignals(stocks) {
             signals.push({
                 ...stock,
                 signal_type: 'overbought',
-                signal_label: '📈 Aşırı Alım (RSI > 70)',
+                signal_label: 'Overbought (RSI > 70)',
                 description: `${stock.name} RSI ${stock.rsi} ile aşırı alım bölgesinde. Kar realizasyonu düşünülebilir.`,
                 suggestion: 'Pozisyon varsa kademeli satış düşünülebilir.',
                 urgency: 'bugün',
@@ -108,7 +107,7 @@ function findStockSignals(stocks) {
             signals.push({
                 ...stock,
                 signal_type: 'breakout',
-                signal_label: '🚀 Kırılım (Breakout)',
+                signal_label: 'Breakout',
                 description: `${stock.name} %${stock.change_percent.toFixed(1)} artışla yüksek hacimde kırılım yapıyor.`,
                 suggestion: 'Momentum trade için uygun olabilir. Hedef fiyat belirleyin.',
                 urgency: 'hemen',
@@ -120,7 +119,7 @@ function findStockSignals(stocks) {
             signals.push({
                 ...stock,
                 signal_type: 'volume_spike',
-                signal_label: '📊 Hacim Patlaması',
+                signal_label: 'Volume Spike',
                 description: `${stock.name} hacmi %${stock.volume_change.toFixed(0)} arttı. Büyük bir hareket gelebilir.`,
                 suggestion: 'Haberleri takip edin. Pozisyon almadan önce analiz yapın.',
                 urgency: 'bugün',

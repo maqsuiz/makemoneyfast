@@ -1,13 +1,13 @@
 /* ParaKazanma Dashboard – Frontend Logic */
 
 const API = {
-    report: '/api/report',
-    crypto: '/api/crypto',
-    ecommerce: '/api/ecommerce',
-    stocks: '/api/stocks',
-    'ai-tools': '/api/ai-tools',
-    freelance: '/api/freelance',
-    trends: '/api/trends'
+  report: '/api/report',
+  crypto: '/api/crypto',
+  ecommerce: '/api/ecommerce',
+  stocks: '/api/stocks',
+  'ai-tools': '/api/ai-tools',
+  freelance: '/api/freelance',
+  trends: '/api/trends'
 };
 
 let currentTab = 'report';
@@ -15,98 +15,98 @@ let dataCache = {};
 
 // Init
 document.addEventListener('DOMContentLoaded', () => {
-    setupTabs();
-    setupRefresh();
-    loadTab('report');
+  setupTabs();
+  setupRefresh();
+  loadTab('report');
 });
 
 function setupTabs() {
-    document.querySelectorAll('.tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-            currentTab = tab.dataset.tab;
-            loadTab(currentTab);
-        });
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      currentTab = tab.dataset.tab;
+      loadTab(currentTab);
     });
+  });
 }
 
 function setupRefresh() {
-    document.getElementById('btnRefresh').addEventListener('click', async () => {
-        const btn = document.getElementById('btnRefresh');
-        btn.classList.add('spinning');
-        dataCache = {};
-        await fetch('/api/refresh', { method: 'POST' });
-        await loadTab(currentTab);
-        btn.classList.remove('spinning');
-    });
+  document.getElementById('btnRefresh').addEventListener('click', async () => {
+    const btn = document.getElementById('btnRefresh');
+    btn.classList.add('spinning');
+    dataCache = {};
+    await fetch('/api/refresh', { method: 'POST' });
+    await loadTab(currentTab);
+    btn.classList.remove('spinning');
+  });
 }
 
 async function loadTab(tab) {
-    showLoading(true);
-    try {
-        const url = API[tab];
-        if (!dataCache[tab]) {
-            const res = await fetch(url);
-            dataCache[tab] = await res.json();
-        }
-        renderTab(tab, dataCache[tab]);
-        updateTime();
-        if (tab === 'report') updateSummaryBar(dataCache[tab]);
-    } catch (e) {
-        document.getElementById('tabContent').innerHTML = `<div class="card"><p style="color:var(--red)">Veri yüklenemedi: ${e.message}</p></div>`;
+  showLoading(true);
+  try {
+    const url = API[tab];
+    if (!dataCache[tab]) {
+      const res = await fetch(url);
+      dataCache[tab] = await res.json();
     }
-    showLoading(false);
+    renderTab(tab, dataCache[tab]);
+    updateTime();
+    if (tab === 'report') updateSummaryBar(dataCache[tab]);
+  } catch (e) {
+    document.getElementById('tabContent').innerHTML = `<div class="card"><p style="color:var(--red)">Veri yüklenemedi: ${e.message}</p></div>`;
+  }
+  showLoading(false);
 }
 
 function showLoading(show) {
-    document.getElementById('loading').style.display = show ? 'flex' : 'none';
-    document.getElementById('tabContent').style.display = show ? 'none' : 'block';
+  document.getElementById('loading').style.display = show ? 'flex' : 'none';
+  document.getElementById('tabContent').style.display = show ? 'none' : 'block';
 }
 
 function updateTime() {
-    document.getElementById('updateTime').textContent = 'Son: ' + new Date().toLocaleTimeString('tr-TR');
+  document.getElementById('updateTime').textContent = 'Last: ' + new Date().toLocaleTimeString('tr-TR');
 }
 
 function updateSummaryBar(report) {
-    document.getElementById('totalOpps').textContent = report.total_opportunities || 0;
-    document.getElementById('aiRecommendation').textContent = report.ai_recommendation || '';
+  document.getElementById('totalOpps').textContent = report.total_opportunities || 0;
+  document.getElementById('aiRecommendation').textContent = report.ai_recommendation || '';
 
-    // Count by type
-    const opps = report.opportunities || [];
-    document.getElementById('ecomOpps').textContent = opps.filter(o => o.type === 'arbitrage').length;
-    document.getElementById('cryptoOpps').textContent = opps.filter(o => o.type === 'crypto').length;
-    document.getElementById('stockOpps').textContent = opps.filter(o => o.type === 'stock').length;
-    document.getElementById('freelanceOpps').textContent = opps.filter(o => o.type === 'freelance').length;
-    document.getElementById('aiOpps').textContent = opps.filter(o => o.type === 'ai_tool').length;
+  // Count by type
+  const opps = report.opportunities || [];
+  document.getElementById('ecomOpps').textContent = opps.filter(o => o.type === 'arbitrage').length;
+  document.getElementById('cryptoOpps').textContent = opps.filter(o => o.type === 'crypto').length;
+  document.getElementById('stockOpps').textContent = opps.filter(o => o.type === 'stock').length;
+  document.getElementById('freelanceOpps').textContent = opps.filter(o => o.type === 'freelance').length;
+  document.getElementById('aiOpps').textContent = opps.filter(o => o.type === 'ai_tool').length;
 }
 
 // ============ RENDERERS ============
 
 function renderTab(tab, data) {
-    const container = document.getElementById('tabContent');
-    const renderers = {
-        'report': renderReport,
-        'ecommerce': renderEcommerce,
-        'crypto': renderCrypto,
-        'stocks': renderStocks,
-        'ai-tools': renderAITools,
-        'freelance': renderFreelance,
-        'trends': renderTrends
-    };
-    container.innerHTML = renderers[tab] ? renderers[tab](data) : '<p>Bilinmeyen sekme</p>';
+  const container = document.getElementById('tabContent');
+  const renderers = {
+    'report': renderReport,
+    'ecommerce': renderEcommerce,
+    'crypto': renderCrypto,
+    'stocks': renderStocks,
+    'ai-tools': renderAITools,
+    'freelance': renderFreelance,
+    'trends': renderTrends
+  };
+  container.innerHTML = renderers[tab] ? renderers[tab](data) : '<p>Bilinmeyen sekme</p>';
 }
 
 function renderReport(data) {
-    const opps = data.opportunities || [];
-    return `
+  const opps = data.opportunities || [];
+  return `
     <div class="report-header">
       <h2>${data.title || 'Günlük Rapor'}</h2>
       <p>${data.summary || ''}</p>
       ${data.highlights ? `<div class="report-highlights">${data.highlights.map(h => `<span class="highlight-chip">${h}</span>`).join('')}</div>` : ''}
     </div>
     <div class="section-header">
-      <div class="section-title">🏆 Tüm Fırsatlar (Güven Skoruna Göre)</div>
+      <div class="section-title">ALL OPPORTUNITIES (By Confidence)</div>
     </div>
     <div class="opp-list">
       ${opps.map((o, i) => `
@@ -117,10 +117,10 @@ function renderReport(data) {
             <div class="opp-desc">${o.description}</div>
             <div class="opp-meta">
               <span class="meta-tag">${o.module}</span>
-              <span class="meta-tag">💰 ${o.potential_profit}</span>
+              <span class="meta-tag">${o.potential_profit}</span>
               <span class="meta-tag ${o.risk_level === 'düşük' ? 'badge-green' : o.risk_level === 'yüksek' ? 'badge-red' : 'badge-yellow'}"">Risk: ${o.risk_level}</span>
-              <span class="meta-tag">⏰ ${o.urgency}</span>
-              <span class="meta-tag">🎯 %${o.confidence}</span>
+              <span class="meta-tag">TIME: ${o.urgency}</span>
+              <span class="meta-tag">CONF: %${o.confidence}</span>
             </div>
           </div>
         </div>
@@ -129,19 +129,19 @@ function renderReport(data) {
 }
 
 function renderEcommerce(data) {
-    const opps = data.opportunities || [];
-    return `
+  const opps = data.opportunities || [];
+  return `
     <div class="section-header">
       <div>
-        <div class="section-title">🛒 E-Ticaret Arbitraj Fırsatları</div>
-        <div class="section-subtitle">${data.data_source} • ${opps.length} fırsat bulundu</div>
+        <div class="section-title">E-COMMERCE ARBITRAGE</div>
+        <div class="section-subtitle">${data.data_source} • ${opps.length} opportunities found</div>
       </div>
     </div>
     <div class="card-grid">
       ${opps.map((o, i) => `
         <div class="card" style="animation-delay:${i * 0.06}s">
           <div class="card-header">
-            <span class="card-title">${o.image} ${o.product_name}</span>
+            <span class="card-title">${o.product_name}</span>
             <span class="card-badge badge-green">%${o.price_difference_percent} fark</span>
           </div>
           <div class="card-body">
@@ -166,18 +166,18 @@ function renderEcommerce(data) {
 }
 
 function renderCrypto(data) {
-    const coins = data.all_coins && data.all_coins.length ? data.all_coins : data.opportunities || [];
-    const arb = data.arbitrage || [];
-    return `
+  const coins = data.all_coins && data.all_coins.length ? data.all_coins : data.opportunities || [];
+  const arb = data.arbitrage || [];
+  return `
     <div class="section-header">
       <div>
-        <div class="section-title">₿ Kripto Piyasası</div>
+        <div class="section-title">CRYPTO MARKET</div>
         <div class="section-subtitle">${data.data_source}</div>
       </div>
     </div>
     ${arb.length ? `
     <div style="margin-bottom:24px">
-      <h3 style="font-size:15px;font-weight:700;margin-bottom:12px">🔄 Arbitraj Fırsatları</h3>
+      <h3 style="font-size:15px;font-weight:700;margin-bottom:12px">ARBITRAGE OPPORTUNITIES</h3>
       <div class="card-grid">
         ${arb.map((a, i) => `
           <div class="card" style="animation-delay:${i * 0.06}s">
@@ -186,8 +186,8 @@ function renderCrypto(data) {
               <span class="card-badge badge-green">%${a.spread_percent} spread</span>
             </div>
             <div class="card-body">
-              <div class="price-row"><span class="platform">📥 Al: ${a.buy_exchange}</span><span class="price cheapest">$${a.buy_price}</span></div>
-              <div class="price-row"><span class="platform">📤 Sat: ${a.sell_exchange}</span><span class="price expensive">$${a.sell_price}</span></div>
+              <div class="price-row"><span class="platform">BUY: ${a.buy_exchange}</span><span class="price cheapest">$${a.buy_price}</span></div>
+              <div class="price-row"><span class="platform">SELL: ${a.sell_exchange}</span><span class="price expensive">$${a.sell_price}</span></div>
               <div class="profit-highlight">
                 <span class="label">Her $1000 için kar:</span>
                 <span class="value">$${a.potential_profit_per_1000}</span>
@@ -197,7 +197,7 @@ function renderCrypto(data) {
         `).join('')}
       </div>
     </div>` : ''}
-    <h3 style="font-size:15px;font-weight:700;margin-bottom:12px">📊 Piyasa Tablosu</h3>
+    <h3 style="font-size:15px;font-weight:700;margin-bottom:12px">MARKET DATA</h3>
     <div class="card" style="overflow-x:auto">
       <table class="crypto-table">
         <thead><tr><th>Coin</th><th>Fiyat</th><th>24s Değişim</th><th>Sinyal</th><th>Risk</th><th></th></tr></thead>
@@ -218,13 +218,13 @@ function renderCrypto(data) {
 }
 
 function renderStocks(data) {
-    const signals = data.signals || [];
-    const stocks = data.all_stocks || [];
-    const ms = data.market_summary || {};
-    return `
+  const signals = data.signals || [];
+  const stocks = data.all_stocks || [];
+  const ms = data.market_summary || {};
+  return `
     <div class="section-header">
       <div>
-        <div class="section-title">📈 Hisse Senedi Tarayıcı</div>
+        <div class="section-title">STOCK SCANNER</div>
         <div class="section-subtitle">${data.data_source}</div>
       </div>
     </div>
@@ -236,7 +236,7 @@ function renderStocks(data) {
       <div class="summary-card"><div><span class="summary-value">${ms.eur_try}₺</span><span class="summary-label">EUR/TRY</span></div></div>
     </div>
     ${signals.length ? `
-    <h3 style="font-size:15px;font-weight:700;margin-bottom:12px">⚡ Aktif Sinyaller</h3>
+    <h3 style="font-size:15px;font-weight:700;margin-bottom:12px">ACTIVE SIGNALS</h3>
     <div class="card-grid">
       ${signals.map((s, i) => `
         <div class="card" style="animation-delay:${i * 0.06}s">
@@ -246,12 +246,12 @@ function renderStocks(data) {
           </div>
           <div class="card-body">
             <p>${s.description}</p>
-            <p style="color:var(--accent-3);margin-top:8px">💡 ${s.suggestion}</p>
+            <p style="color:var(--accent-3);margin-top:8px">INFO: ${s.suggestion}</p>
             <div class="card-meta">
-              <span class="meta-tag">💰 ${s.price.toLocaleString('tr-TR')} ${s.market === 'BIST' ? '₺' : '$'}</span>
+              <span class="meta-tag">PRICE: ${s.price.toLocaleString('tr-TR')} ${s.market === 'BIST' ? '₺' : '$'}</span>
               <span class="meta-tag">RSI: ${s.rsi}</span>
-              <span class="meta-tag">🎯 %${s.confidence}</span>
-              <span class="meta-tag">⏰ ${s.urgency}</span>
+              <span class="meta-tag">CONF: %${s.confidence}</span>
+              <span class="meta-tag">TIME: ${s.urgency}</span>
             </div>
           </div>
           <div class="card-footer">
@@ -264,12 +264,12 @@ function renderStocks(data) {
 }
 
 function renderAITools(data) {
-    const tools = data.tools || [];
-    return `
+  const tools = data.tools || [];
+  return `
     <div class="section-header">
       <div>
-        <div class="section-title">🤖 Yeni AI Araçları</div>
-        <div class="section-subtitle">${data.data_source} • ${tools.length} araç</div>
+        <div class="section-title">KOMBAI TOOLS</div>
+        <div class="section-subtitle">${data.data_source} • ${tools.length} results</div>
       </div>
     </div>
     <div class="card-grid">
@@ -277,15 +277,15 @@ function renderAITools(data) {
         <div class="card" style="animation-delay:${i * 0.06}s">
           <div class="card-header">
             <span class="card-title">${t.name}</span>
-            <span class="tool-trend trend-${t.trend}">${t.trend === 'hot' ? '🔥 HOT' : t.trend === 'rising' ? '📈 Yükseliyor' : '➡️ Stabil'}</span>
+            <span class="tool-trend trend-${t.trend}">${t.trend === 'hot' ? 'HOT' : t.trend === 'rising' ? 'RISING' : 'STABLE'}</span>
           </div>
           <div class="card-body">
             <p>${t.description}</p>
             <div class="card-meta" style="margin-top:8px">
               <span class="meta-tag">${t.category}</span>
-              <span class="meta-tag">💲 ${t.pricing}</span>
-              <span class="meta-tag">⬆️ ${t.upvotes}</span>
-              <span class="card-badge ${t.money_making_potential === 'Yüksek' ? 'badge-green' : 'badge-yellow'}">💰 ${t.money_making_potential}</span>
+              <span class="meta-tag">PRICE: ${t.pricing}</span>
+              <span class="meta-tag">UP: ${t.upvotes}</span>
+              <span class="card-badge ${t.money_making_potential === 'Yüksek' ? 'badge-green' : 'badge-yellow'}">PROFIT: ${t.money_making_potential}</span>
             </div>
             <ul class="use-cases">
               ${t.use_cases.map(u => `<li>${u}</li>`).join('')}
@@ -301,13 +301,13 @@ function renderAITools(data) {
 }
 
 function renderFreelance(data) {
-    const jobs = data.top_opportunities || data.all_jobs || [];
-    const s = data.summary || {};
-    return `
+  const jobs = data.top_opportunities || data.all_jobs || [];
+  const s = data.summary || {};
+  return `
     <div class="section-header">
       <div>
-        <div class="section-title">💼 Freelance İş Fırsatları</div>
-        <div class="section-subtitle">${data.data_source} • ${jobs.length} iş</div>
+        <div class="section-title">FREELANCE JOBS</div>
+        <div class="section-subtitle">${data.data_source} • ${jobs.length} results</div>
       </div>
     </div>
     <div class="summary-bar" style="padding:0 0 16px 0;grid-template-columns:repeat(4,1fr)">
@@ -327,17 +327,17 @@ function renderFreelance(data) {
             <p>${j.desc}</p>
             <div class="card-meta" style="margin-top:10px">
               <span class="meta-tag">${j.platform}</span>
-              <span class="meta-tag">💰 ${j.currency === 'TRY' ? '' : ' $'}${j.budget_min}-${j.budget_max}${j.currency === 'TRY' ? ' ₺' : ''}</span>
-              <span class="meta-tag">⭐ ${j.client_rating}</span>
-              <span class="meta-tag">📝 ${j.proposals} teklif</span>
-              <span class="meta-tag">⏰ ${j.hours_ago}s önce</span>
+              <span class="meta-tag">BUDGET: ${j.currency === 'TRY' ? '' : ' $'}${j.budget_min}-${j.budget_max}${j.currency === 'TRY' ? ' ₺' : ''}</span>
+              <span class="meta-tag">RATE: ${j.client_rating}</span>
+              <span class="meta-tag">PROPOSALS: ${j.proposals}</span>
+              <span class="meta-tag">TIME: ${j.hours_ago}h ago</span>
             </div>
             <div class="skill-tags" style="margin-top:8px">
               ${j.skills.map(s => `<span class="skill-tag">${s}</span>`).join('')}
             </div>
           </div>
           <div class="card-footer">
-            <span class="meta-tag ${j.urgency === 'hemen' ? 'badge-red' : j.urgency === 'bugün' ? 'badge-yellow' : ''}">⚡ ${j.urgency}</span>
+            <span class="meta-tag ${j.urgency === 'hemen' ? 'badge-red' : j.urgency === 'bugün' ? 'badge-yellow' : ''}">${j.urgency}</span>
             <a class="card-link" href="${j.link}" target="_blank">İşe Git</a>
           </div>
         </div>
@@ -346,12 +346,12 @@ function renderFreelance(data) {
 }
 
 function renderTrends(data) {
-    const trends = data.trends || [];
-    return `
+  const trends = data.trends || [];
+  return `
     <div class="section-header">
       <div>
-        <div class="section-title">📊 Trend & Sosyal Medya</div>
-        <div class="section-subtitle">${data.data_source} • ${trends.length} trend</div>
+        <div class="section-title">TRENDS & SOCIAL</div>
+        <div class="section-subtitle">${data.data_source} • ${trends.length} results</div>
       </div>
     </div>
     <div class="card-grid">
@@ -362,10 +362,10 @@ function renderTrends(data) {
             <span class="tool-trend ${t.velocity.includes('Hızla') ? 'trend-hot' : t.velocity.includes('Yüksel') ? 'trend-rising' : 'trend-stable'}">${t.velocity}</span>
           </div>
           <div class="card-body">
-            <p style="color:var(--accent-3);font-weight:600">💡 ${t.money_angle}</p>
+            <p style="color:var(--accent-3);font-weight:600">INFO: ${t.money_angle}</p>
             <div class="card-meta" style="margin-top:10px">
               <span class="meta-tag">${t.platform}</span>
-              <span class="meta-tag">📊 ${t.engagement.toLocaleString()} engagement</span>
+              <span class="meta-tag">ENGAGEMENT: ${t.engagement.toLocaleString()}</span>
               <span class="meta-tag ${t.sentiment === 'Pozitif' || t.sentiment === 'Çok Pozitif' || t.sentiment === 'Boğa' ? 'badge-green' : t.sentiment === 'Negatif' ? 'badge-red' : 'badge-yellow'}">${t.sentiment}</span>
               <span class="meta-tag">${t.category}</span>
             </div>
@@ -382,12 +382,12 @@ function renderTrends(data) {
 
 // Helpers
 function formatSignal(type) {
-    const map = {
-        'strong_dip': '📉 Güçlü Dip',
-        'dip': '📉 Dip',
-        'pump': '🚀 Pump',
-        'rising': '📈 Yükseliş',
-        'neutral': '➡️ Nötr'
-    };
-    return map[type] || type || '—';
+  const map = {
+    'strong_dip': 'STRONG DIP',
+    'dip': 'DIP',
+    'pump': 'PUMP',
+    'rising': 'RISING',
+    'neutral': 'NEUTRAL'
+  };
+  return map[type] || type || '—';
 }

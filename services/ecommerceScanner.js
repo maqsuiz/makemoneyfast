@@ -13,8 +13,7 @@ async function scanEcommerce() {
 
         return {
             module: 'ecommerce',
-            title: '🛒 E-Ticaret Arbitraj Tarayıcı',
-            icon: '🛒',
+            title: 'E-Commerce Arbitrage Scanner',
             last_updated: new Date().toISOString(),
             data_source: 'Simüle Edilen Piyasa Verisi',
             summary: {
@@ -37,9 +36,8 @@ async function scanEcommerce() {
 function generateRealisticProducts() {
     const products = [
         {
-            name: 'Apple AirPods Pro 2. Nesil',
-            category: 'elektronik',
-            image: '🎧',
+            name: 'Apple AirPods Pro 2nd Gen',
+            category: 'electronics',
             prices: { trendyol: 7499, amazon: 6299, hepsiburada: 6899 },
             urls: {
                 trendyol: 'https://www.trendyol.com/apple/airpods-pro',
@@ -49,8 +47,7 @@ function generateRealisticProducts() {
         },
         {
             name: 'Samsung Galaxy S24 Ultra 256GB',
-            category: 'telefon',
-            image: '📱',
+            category: 'phone',
             prices: { trendyol: 54999, amazon: 49999, hepsiburada: 52499 },
             urls: {
                 trendyol: 'https://www.trendyol.com/samsung/galaxy-s24-ultra',
@@ -59,9 +56,8 @@ function generateRealisticProducts() {
             }
         },
         {
-            name: 'Sony WH-1000XM5 Kablosuz Kulaklık',
-            category: 'elektronik',
-            image: '🎧',
+            name: 'Sony WH-1000XM5 Wireless Headphones',
+            category: 'electronics',
             prices: { trendyol: 8999, amazon: 7499, hepsiburada: 8299 },
             urls: {
                 trendyol: 'https://www.trendyol.com/sony/wh-1000xm5',
@@ -71,8 +67,7 @@ function generateRealisticProducts() {
         },
         {
             name: 'Apple MacBook Air M3 256GB',
-            category: 'bilgisayar',
-            image: '💻',
+            category: 'laptop',
             prices: { trendyol: 42999, amazon: 38999, hepsiburada: 40999 },
             urls: {
                 trendyol: 'https://www.trendyol.com/apple/macbook-air-m3',
@@ -82,8 +77,7 @@ function generateRealisticProducts() {
         },
         {
             name: 'PlayStation 5 Slim Digital Edition',
-            category: 'oyun konsolları',
-            image: '🎮',
+            category: 'gaming',
             prices: { trendyol: 17999, amazon: 15499, hepsiburada: 16499 },
             urls: {
                 trendyol: 'https://www.trendyol.com/playstation/ps5-slim',
@@ -93,8 +87,7 @@ function generateRealisticProducts() {
         },
         {
             name: 'DJI Mini 4 Pro Drone',
-            category: 'elektronik',
-            image: '🚁',
+            category: 'electronics',
             prices: { trendyol: 28999, amazon: 24999, hepsiburada: 26999 },
             urls: {
                 trendyol: 'https://www.trendyol.com/dji/mini-4-pro',
@@ -105,7 +98,6 @@ function generateRealisticProducts() {
         {
             name: 'Apple iPad Air M2 256GB',
             category: 'tablet',
-            image: '📱',
             prices: { trendyol: 25999, amazon: 22999, hepsiburada: 24499 },
             urls: {
                 trendyol: 'https://www.trendyol.com/apple/ipad-air-m2',
@@ -114,9 +106,8 @@ function generateRealisticProducts() {
             }
         },
         {
-            name: 'Dyson V15 Detect Süpürge',
-            category: 'ev aletleri',
-            image: '🧹',
+            name: 'Dyson V15 Detect Vacuum',
+            category: 'home',
             prices: { trendyol: 22999, amazon: 19999, hepsiburada: 21499 },
             urls: {
                 trendyol: 'https://www.trendyol.com/dyson/v15-detect',
@@ -126,8 +117,7 @@ function generateRealisticProducts() {
         },
         {
             name: 'LG C4 55" OLED TV',
-            category: 'elektronik',
-            image: '📺',
+            category: 'electronics',
             prices: { trendyol: 44999, amazon: 39999, hepsiburada: 42999 },
             urls: {
                 trendyol: 'https://www.trendyol.com/lg/oled55c4',
@@ -137,8 +127,7 @@ function generateRealisticProducts() {
         },
         {
             name: 'Xiaomi Robot Vacuum X20 Pro',
-            category: 'ev aletleri',
-            image: '🤖',
+            category: 'home',
             prices: { trendyol: 16999, amazon: 13999, hepsiburada: 15499 },
             urls: {
                 trendyol: 'https://www.trendyol.com/xiaomi/robot-vacuum-x20-pro',
@@ -148,8 +137,7 @@ function generateRealisticProducts() {
         },
         {
             name: 'Apple Watch Ultra 2',
-            category: 'elektronik',
-            image: '⌚',
+            category: 'electronics',
             prices: { trendyol: 29999, amazon: 26499, hepsiburada: 28499 },
             urls: {
                 trendyol: 'https://www.trendyol.com/apple/watch-ultra-2',
@@ -159,8 +147,7 @@ function generateRealisticProducts() {
         },
         {
             name: 'Nvidia GeForce RTX 4070 Super',
-            category: 'bilgisayar',
-            image: '🖥️',
+            category: 'computer',
             prices: { trendyol: 24999, amazon: 21499, hepsiburada: 23499 },
             urls: {
                 trendyol: 'https://www.trendyol.com/nvidia/rtx-4070-super',
