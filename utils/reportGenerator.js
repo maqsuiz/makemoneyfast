@@ -110,7 +110,7 @@ function generateReport(allData) {
     opportunities.sort((a, b) => b.confidence - a.confidence);
 
     return {
-        title: `📋 ParaKazanma Günlük Fırsat Raporu – ${dateStr}`,
+        title: `📋 Günlük Fırsat Raporu – ${dateStr}`,
         generated_at: now.toISOString(),
         total_opportunities: opportunities.length,
         summary: `Bugün ${opportunities.length} fırsat bulundu.`,
