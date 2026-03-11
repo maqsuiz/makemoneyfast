@@ -391,3 +391,15 @@ function formatSignal(type) {
   };
   return map[type] || type || '—';
 }
+
+function formatRiskLevel(level) {
+  const map = {
+    'düşük': 'low',
+    'orta': 'medium',
+    'yüksek': 'high',
+    'low': 'low',
+    'medium': 'medium',
+    'high': 'high'
+  };
+  return map[level] || level || 'medium';
+}

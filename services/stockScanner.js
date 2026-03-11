@@ -24,8 +24,8 @@ async function scanStocks() {
             all_stocks: stocks
         };
     } catch (error) {
-        console.error('Hisse tarama hatası:', error.message);
-        return { module: 'stocks', title: '📈 Hisse Senedi Tarayıcı', icon: '📈', signals: [], error: error.message };
+        console.error('Stock scan error:', error.message);
+        return { module: 'stocks', title: 'Stock Scanner', signals: [], error: error.message };
     }
 }
 
@@ -44,14 +44,14 @@ function generateStockData() {
     ];
 
     const global_stocks = [
-        { ticker: 'NVDA', name: 'NVIDIA', sector: 'Teknoloji', price: 875.3, market: 'NASDAQ' },
-        { ticker: 'AAPL', name: 'Apple', sector: 'Teknoloji', price: 178.5, market: 'NASDAQ' },
-        { ticker: 'MSFT', name: 'Microsoft', sector: 'Teknoloji', price: 415.8, market: 'NASDAQ' },
-        { ticker: 'GOOGL', name: 'Alphabet', sector: 'Teknoloji', price: 152.3, market: 'NASDAQ' },
-        { ticker: 'TSLA', name: 'Tesla', sector: 'Otomotiv', price: 198.7, market: 'NASDAQ' },
-        { ticker: 'META', name: 'Meta Platforms', sector: 'Teknoloji', price: 502.4, market: 'NASDAQ' },
-        { ticker: 'AMZN', name: 'Amazon', sector: 'E-Ticaret', price: 178.2, market: 'NASDAQ' },
-        { ticker: 'AMD', name: 'AMD', sector: 'Yarı İletken', price: 168.9, market: 'NASDAQ' }
+        { ticker: 'NVDA', name: 'NVIDIA', sector: 'Technology', price: 875.3, market: 'NASDAQ' },
+        { ticker: 'AAPL', name: 'Apple', sector: 'Technology', price: 178.5, market: 'NASDAQ' },
+        { ticker: 'MSFT', name: 'Microsoft', sector: 'Technology', price: 415.8, market: 'NASDAQ' },
+        { ticker: 'GOOGL', name: 'Alphabet', sector: 'Technology', price: 152.3, market: 'NASDAQ' },
+        { ticker: 'TSLA', name: 'Tesla', sector: 'Automotive', price: 198.7, market: 'NASDAQ' },
+        { ticker: 'META', name: 'Meta Platforms', sector: 'Technology', price: 502.4, market: 'NASDAQ' },
+        { ticker: 'AMZN', name: 'Amazon', sector: 'E-Commerce', price: 178.2, market: 'NASDAQ' },
+        { ticker: 'AMD', name: 'AMD', sector: 'Semiconductor', price: 168.9, market: 'NASDAQ' }
     ];
 
     const allStocks = [...bist_stocks, ...global_stocks];
