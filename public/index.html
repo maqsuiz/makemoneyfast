@@ -26,11 +26,8 @@
       </div>
     </div>
     <div class="header-right">
-      <div class="status-badge" id="statusBadge">
-        <span class="status-dot"></span>
-        <span>Canlı</span>
-      </div>
-      <button class="btn-refresh" id="btnRefresh" title="Verileri Yenile">
+      <div class="status-pill status-live">LIVE</div>
+      <button class="header-btn" onclick="refreshData()" title="Refresh Data">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M23 4v6h-6M1 20v-6h6" />
           <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
@@ -103,8 +100,7 @@
   <!-- Content Area -->
   <main class="content" id="mainContent">
     <div class="loading" id="loading">
-      <div class="spinner"></div>
-      <p>Fırsatlar taranıyor...</p>
+      <div id="loader" class="loader">Scanning opportunities...</div>
     </div>
     <div id="tabContent"></div>
   </main>

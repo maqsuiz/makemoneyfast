@@ -5,7 +5,7 @@
 
 function generateReport(allData) {
     const now = new Date();
-    const dateStr = now.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
+    const dateStr = now.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
 
     const opportunities = [];
 
@@ -67,9 +67,9 @@ function generateReport(allData) {
 
     // AI Tools
     if (allData.ai_tools && allData.ai_tools.tools) {
-        allData.ai_tools.tools.filter(t => t.money_making_potential === 'Yüksek').slice(0, 2).forEach(t => {
+        allData.ai_tools.tools.filter(t => t.money_making_potential === 'High').slice(0, 2).forEach(t => {
             opportunities.push({
-                title: `Yeni KOMBAI Aracı: ${t.name} – ${t.category}`,
+                title: `New KOMBAI Tool: ${t.name} – ${t.category}`,
                 type: 'ai_tool', module: 'KOMBAI',
                 description: t.description,
                 potential_profit: t.use_cases[0],
@@ -95,7 +95,7 @@ function generateReport(allData) {
 
     // Trends
     if (allData.trends && allData.trends.trends) {
-        allData.trends.trends.filter(t => t.velocity.includes('Yüksel')).slice(0, 2).forEach(t => {
+        allData.trends.trends.filter(t => t.velocity.includes('Rising')).slice(0, 2).forEach(t => {
             opportunities.push({
                 title: `Trend: ${t.topic}`,
                 type: 'trend', module: 'Trend',

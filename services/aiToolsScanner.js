@@ -11,7 +11,7 @@ async function scanAITools() {
             module: 'ai_tools',
             title: 'KOMBAI Tools Scanner',
             last_updated: new Date().toISOString(),
-            data_source: 'Küratörlü AI Araç Veritabanı',
+            data_source: 'Curated AI Tools Database',
             summary: {
                 total_new_tools: tools.length,
                 free_tools: tools.filter(t => t.pricing === 'Free' || t.pricing === 'Freemium').length,

@@ -65,7 +65,7 @@ function showLoading(show) {
 }
 
 function updateTime() {
-  document.getElementById('updateTime').textContent = 'Last: ' + new Date().toLocaleTimeString('tr-TR');
+  document.getElementById('updateTime').textContent = 'Last: ' + new Date().toLocaleTimeString('en-US');
 }
 
 function updateSummaryBar(report) {
@@ -189,7 +189,7 @@ function renderCrypto(data) {
               <div class="price-row"><span class="platform">BUY: ${a.buy_exchange}</span><span class="price cheapest">$${a.buy_price}</span></div>
               <div class="price-row"><span class="platform">SELL: ${a.sell_exchange}</span><span class="price expensive">$${a.sell_price}</span></div>
               <div class="profit-highlight">
-                <span class="label">Her $1000 için kar:</span>
+                <span class="label">Profit per $1000:</span>
                 <span class="value">$${a.potential_profit_per_1000}</span>
               </div>
             </div>
@@ -248,7 +248,7 @@ function renderStocks(data) {
             <p>${s.description}</p>
             <p style="color:var(--accent-3);margin-top:8px">INFO: ${s.suggestion}</p>
             <div class="card-meta">
-              <span class="meta-tag">PRICE: ${s.price.toLocaleString('tr-TR')} ${s.market === 'BIST' ? '₺' : '$'}</span>
+              <span class="meta-tag">PRICE: ${s.price.toLocaleString('en-US')} ${s.market === 'BIST' ? '₺' : '$'}</span>
               <span class="meta-tag">RSI: ${s.rsi}</span>
               <span class="meta-tag">CONF: %${s.confidence}</span>
               <span class="meta-tag">TIME: ${s.urgency}</span>
@@ -292,7 +292,7 @@ function renderAITools(data) {
             </ul>
           </div>
           <div class="card-footer">
-            <span class="meta-tag">📅 ${t.launch_date}</span>
+            <span class="meta-tag">${t.launch_date}</span>
             <a class="card-link" href="${t.link}" target="_blank">Review Tool</a>
           </div>
         </div>
