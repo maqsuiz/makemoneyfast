@@ -1,46 +1,7 @@
 {
-    "version": 2,
-    "builds": [
-        {
-            "src": "api/**/*.js",
-            "use": "@vercel/node"
-        },
-        {
-            "src": "public/**",
-            "use": "@vercel/static"
-        }
-    ],
     "rewrites": [
         {
-            "source": "/api/crypto",
-            "destination": "/api/crypto"
-        },
-        {
-            "source": "/api/ecommerce",
-            "destination": "/api/ecommerce"
-        },
-        {
-            "source": "/api/stocks",
-            "destination": "/api/stocks"
-        },
-        {
-            "source": "/api/ai-tools",
-            "destination": "/api/ai-tools"
-        },
-        {
-            "source": "/api/freelance",
-            "destination": "/api/freelance"
-        },
-        {
-            "source": "/api/trends",
-            "destination": "/api/trends"
-        },
-        {
-            "source": "/api/report",
-            "destination": "/api/report"
-        },
-        {
-            "source": "/(.*)",
+            "source": "/((?!api/).*)",
             "destination": "/public/$1"
         }
     ],
@@ -55,10 +16,6 @@
                 {
                     "key": "Access-Control-Allow-Methods",
                     "value": "GET,POST,OPTIONS"
-                },
-                {
-                    "key": "Cache-Control",
-                    "value": "s-maxage=300, stale-while-revalidate=600"
                 }
             ]
         }
