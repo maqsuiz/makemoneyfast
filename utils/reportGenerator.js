@@ -69,7 +69,7 @@ function generateReport(allData) {
     if (allData.ai_tools && allData.ai_tools.tools) {
         allData.ai_tools.tools.filter(t => t.money_making_potential === 'High').slice(0, 2).forEach(t => {
             opportunities.push({
-                title: `New KOMBAI Tool: ${t.name} – ${t.category}`,
+                title: `New AI Tool: ${t.name} – ${t.category}`,
                 type: 'ai_tool', module: 'KOMBAI',
                 description: t.description,
                 potential_profit: t.use_cases[0],

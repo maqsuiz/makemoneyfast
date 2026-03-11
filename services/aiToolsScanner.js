@@ -9,7 +9,7 @@ async function scanAITools() {
 
         return {
             module: 'ai_tools',
-            title: 'KOMBAI Tools Scanner',
+            title: 'AI Tools Scanner',
             last_updated: new Date().toISOString(),
             data_source: 'Curated AI Tools Database',
             summary: {

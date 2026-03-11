@@ -268,7 +268,7 @@ function renderAITools(data) {
   return `
     <div class="section-header">
       <div>
-        <div class="section-title">KOMBAI TOOLS</div>
+        <div class="section-title">AI TOOLS</div>
         <div class="section-subtitle">${data.data_source} • ${tools.length} results</div>
       </div>
     </div>
